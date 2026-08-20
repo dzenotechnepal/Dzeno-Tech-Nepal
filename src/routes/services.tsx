@@ -23,7 +23,7 @@ export const Route = createFileRoute("/services")({
       },
     ],
   }),
-  component: Services;
+  component: Services,
 });
 
 const blocks = [
