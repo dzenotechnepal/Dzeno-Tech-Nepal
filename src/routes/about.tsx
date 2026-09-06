@@ -41,7 +41,7 @@ function About() {
             Technology With <span className="text-gradient">Purpose.</span>
           </>
         }
-        subtitle="Dzeno Tech Nepal Pvt. Ltd. is a technology company built around three practices — software development, IT services, and IT training — that help businesses and people use technology well."
+        subtitle="Dzeno Tech Nepal Pvt. Ltd. is a technology company built around three practices | software development, IT services, and IT training -  that help businesses and people use technology well."
       />
 
       <section className="container-x grid gap-14 py-12 md:py-20 lg:grid-cols-2">
@@ -55,7 +55,7 @@ function About() {
               teams and students in the skills the industry actually hires for.
             </p>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
-              Every engagement starts with understanding the business problem — then we choose the
+              Every engagement starts with understanding the business problem | then we choose the
               simplest technology that solves it properly.
             </p>
           </div>

@@ -3,17 +3,18 @@ import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
+import logo from '/logo.png';
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
     meta: [
-      { title: "Careers — Build Your Future With Dzeno Tech Nepal" },
+      { title: "Careers - Build Your Future With Dzeno Tech Nepal" },
       {
         name: "description",
         content:
           "Open roles, internships, culture, and benefits at Dzeno Tech Nepal Pvt. Ltd. Apply to build software, IT services, and training with us.",
       },
-      { property: "og:title", content: "Careers — Build Your Future With Dzeno" },
+      { property: "og:title", content: "Careers - Build Your Future With Dzeno" },
       {
         property: "og:description",
         content: "Open positions and internship opportunities at Dzeno Tech Nepal Pvt. Ltd.",
@@ -53,7 +54,9 @@ function Careers() {
         eyebrow="Careers"
         title={
           <>
-            Build Your Future With <span className="text-gradient">Dzeno.</span>
+            Build Future With  <span className="text-gradient">
+              <span> <img src={logo} alt="dzeno logo" className="h-18 w-46" /></span>
+            </span>
           </>
         }
         subtitle="We hire curious engineers and trainers who care about craft and about the people using what they build."

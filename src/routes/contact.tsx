@@ -29,17 +29,17 @@ export const Route = createFileRoute("/contact")({
 
 const services = ["Software Development", "IT Services", "IT Training", "Not sure yet"];
 const budgets = [
-  "Under NPR 2,00,000",
-  "NPR 2,00,000 – 5,00,000",
-  "NPR 5,00,000 – 15,00,000",
-  "Above NPR 15,00,000",
+  "Under NPR 50,000",
+  "NPR 50,000 – 1,00,000",
+  "NPR 1,00,000 – 2,00,000",
+  "Above NPR 2,00,000",
   "To be discussed",
 ];
 
 const details = [
-  { Icon: Mail, label: "Email", value: "hello@dzenotech.com" },
-  { Icon: Phone, label: "Phone", value: "+977 (placeholder number)" },
-  { Icon: MapPin, label: "Address", value: "Kathmandu, Nepal (placeholder address)" },
+  { Icon: Mail, label: "Email", value: "dzenotechnepal77@gmail.com" },
+  { Icon: Phone, label: "Phone", value: "+977- 9744621447" },
+  { Icon: MapPin, label: "Address", value: "Kathmandu, Nepal" },
 ];
 
 const fieldClass =
@@ -186,7 +186,7 @@ function Contact() {
                 {["LinkedIn", "Facebook", "GitHub", "Instagram"].map((s) => (
                   <a
                     key={s}
-                    href="#"
+                    href="https://www.linkedin.com/company/dzeno-tech-nepal/"
                     className="text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {s}

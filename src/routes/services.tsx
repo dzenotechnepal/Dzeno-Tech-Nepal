@@ -79,7 +79,7 @@ function Services() {
             Technology, Built Around <span className="text-gradient">Your Goals.</span>
           </>
         }
-        subtitle="Three practices that work together — build the product, run the technology, grow the skills."
+        subtitle="Three practices that work together | build the product, run the technology, grow the skills."
       />
 
       <div className="container-x space-y-24 pb-10 md:space-y-36">

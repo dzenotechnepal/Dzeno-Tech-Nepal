@@ -259,7 +259,7 @@ function Home() {
           ))}
         </div>
         <p className="mt-5 text-xs text-muted-foreground">
-          Note: these figures are editable placeholders, not verified claims — update them with your
+          Note: these figures are editable placeholders, not verified claims | update them with your
           own numbers.
         </p>
       </section>

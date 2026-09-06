@@ -2,13 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import logo from "@/assets/logo.png";
+import logo from "/logo.png";
 
 const links = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
   { to: "/services", label: "Services" },
-  { to: "/team", label: "Team" },
+  // { to: "/team", label: "Team" },
   { to: "/careers", label: "Careers" },
   { to: "/contact", label: "Contact" },
 ] as const;
@@ -33,10 +33,7 @@ export function Navbar() {
     >
       <nav className="container-x flex h-16 items-center justify-between md:h-20">
         <Link to="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <img src={logo} alt="Dzeno Tech logo" width={36} height={36} className="h-8 w-8" />
-          <span className="text-[0.95rem] font-semibold tracking-tight">
-            Dzeno<span className="text-muted-foreground"> Tech</span>
-          </span>
+          <img src={logo} alt="Dzeno Tech logo" width={36} height={36} className="h-12 w-36" />
         </Link>
 
         <ul className="hidden items-center gap-1 lg:flex">

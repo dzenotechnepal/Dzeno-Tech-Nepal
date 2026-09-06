@@ -1,15 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { Linkedin, Facebook, Github, Mail } from "lucide-react";
-import logo from "@/assets/logo.png";
+// import logo from "@/assets/logo.png";
+import logo from "/logo.png";
 
 export function Footer() {
   return (
     <footer className="hairline-top mt-24 bg-background">
       <div className="container-x grid gap-12 py-16 md:grid-cols-4">
         <div className="md:col-span-2">
-          <div className="flex items-center gap-2.5">
-            <img src={logo} alt="Dzeno Tech logo" width={36} height={36} loading="lazy" className="h-8 w-8" />
-            <span className="font-semibold tracking-tight">Dzeno Tech Nepal Pvt. Ltd.</span>
+          <div className="">
+            <img src={logo} alt="Dzeno Tech logo" loading="lazy" className="h-14 w-42" />
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
             We Build Technology That Moves Businesses Forward.
@@ -38,7 +38,7 @@ export function Footer() {
           <ul className="mt-5 space-y-3 text-sm">
             {[
               { to: "/about", label: "About Us" },
-              { to: "/team", label: "Team" },
+              // { to: "/team", label: "Team" },
               { to: "/careers", label: "Careers" },
               { to: "/contact", label: "Contact" },
             ].map((l) => (
