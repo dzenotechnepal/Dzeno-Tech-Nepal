@@ -65,19 +65,54 @@ function Contact() {
         <Reveal>
           <form
             className="rounded-3xl border border-border bg-card/40 p-7 md:p-10"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSubmitting(true);
-              const form = e.currentTarget;
+             onSubmit={async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
 
-              setTimeout(() => {
-                setSubmitting(false);
-                form.reset();
-                toast.success("Inquiry received", {
-                  description: "Thanks — we'll get back to you shortly.",
-                });
-              }, 600);
-            }}
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    formData.append("access_key", "b516953a-fc16-4471-9714-bc4c7ae006af");
+    formData.append(
+      "subject",
+      "New Contact Inquiry — Dzeno Tech Nepal"
+    );
+
+    try {
+      const response = await fetch(
+        "https://api.web3forms.com/submit",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        form.reset();
+
+        toast.success("Inquiry received", {
+          description:
+            "Thanks — we'll get back to you shortly.",
+        });
+      } else {
+        toast.error("Something went wrong", {
+          description:
+            result.message || "Please try again later.",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+
+      toast.error("Unable to send inquiry", {
+        description:
+          "Please check your internet connection and try again.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  }}
           >
             <div className="grid gap-6 sm:grid-cols-2">
               <div>
