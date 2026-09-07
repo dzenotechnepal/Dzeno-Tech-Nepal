@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { ArrowRight, Mail, Phone, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { PageHero } from "@/components/site/PageHero";
@@ -48,6 +48,7 @@ const fieldClass =
 function Contact() {
   const [submitting, setSubmitting] = useState(false);
 
+
   return (
     <>
       <PageHero
@@ -68,6 +69,7 @@ function Contact() {
               e.preventDefault();
               setSubmitting(true);
               const form = e.currentTarget;
+
               setTimeout(() => {
                 setSubmitting(false);
                 form.reset();
@@ -93,7 +95,7 @@ function Contact() {
                   name="email"
                   type="email"
                   required
-                  placeholder="you@company.com"
+                  placeholder="your_email"
                   className={fieldClass}
                 />
               </div>
