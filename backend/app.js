@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import bcrypt from 'bcryptjs';
 
-import { connectDatabase } from './config/database.js';
+import { connectToMongoDB } from './config/database.js';
 import { User } from './models/User.model.js';
 
 import healthRouter from './routes/health.routes.js';
@@ -40,11 +40,11 @@ app.post('/api/seed/superadmin', async (req, res) => {
     }
 
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash('SuperAdmin@123', salt);
+    const hashedPassword = await bcrypt.hash(process.env.SUPER_ADMIN_PASSWORD || 'superadmin123', salt);
 
     const superAdmin = new User({
       name: 'Super Admin',
-      email: 'superadmin@eightbit.com.np',
+      email: process.env.SUPER_ADMIN_EMAIL || 'superadmin@dzenotechnepal.com.np',
       password: hashedPassword,
       role: 'superadmin',
       designation: 'System Administrator',
@@ -71,7 +71,7 @@ app.use('/api/payslips', payslipRouter);
 app.use('/api/leave', leaveRouter);
 app.use('/api/dashboard', dashboardRouter);
 
-connectDatabase()
+connectToMongoDB()
   .then(() => {
     app.listen(port, () => {
       console.log(`Backend server running on port ${port}`);
