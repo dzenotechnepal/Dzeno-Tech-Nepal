@@ -3,10 +3,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import bcrypt from 'bcryptjs';
 
 import { connectToMongoDB } from './config/database.js';
-import { User } from './models/User.model.js';
+import { seedSuperAdmin } from './utils/seedSuperAdmin.js';
 
 import healthRouter from './routes/health.routes.js';
 import authRouter from './routes/auth.routes.js';
@@ -52,26 +51,11 @@ app.use(morgan('dev'));
 // Seeder endpoint
 app.post('/api/seed/superadmin', async (req, res) => {
   try {
-    const userCount = await User.countDocuments();
-    if (userCount > 0) {
-      return res.status(400).json({ success: false, message: 'Seeding failed: Users already exist in the database' });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(process.env.SUPER_ADMIN_PASSWORD || 'superadmin123', salt);
-
-    const superAdmin = new User({
-      name: 'Super Admin',
-      email: process.env.SUPER_ADMIN_EMAIL || 'superadmin@dzenotechnepal.com.np',
-      password: hashedPassword,
-      role: 'superadmin',
-      designation: 'System Administrator',
-      department: 'Management',
-      isActive: true
+    const result = await seedSuperAdmin();
+    return res.status(result.created ? 201 : 200).json({
+      success: true,
+      message: result.created ? 'Superadmin created successfully' : 'Superadmin already exists',
     });
-
-    await superAdmin.save();
-    return res.status(201).json({ success: true, message: 'Superadmin created successfully' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -90,6 +74,9 @@ app.use('/api/leave', leaveRouter);
 app.use('/api/dashboard', dashboardRouter);
 
 connectToMongoDB()
+  .then(() => {
+    return seedSuperAdmin();
+  })
   .then(() => {
     app.listen(port, () => {
       console.log(`Backend server running on port ${port}`);
