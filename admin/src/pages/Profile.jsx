@@ -14,7 +14,7 @@ const Profile = () => {
         <div className="card md:col-span-1 flex flex-col items-center text-center">
           <UserCircle size={80} className="text-secondary mb-4" />
           <h2 className="mb-1">{user?.name || 'Admin User'}</h2>
-          <p className="text-secondary mb-3">{user?.email || 'admin@eightbit.com'}</p>
+          <p className="text-secondary mb-3">{user?.email || 'admin@dzenotech.com'}</p>
           <Badge type={user?.role === 'admin' ? 'blue' : 'gray'}>
             {(user?.role || 'admin').toUpperCase()}
           </Badge>

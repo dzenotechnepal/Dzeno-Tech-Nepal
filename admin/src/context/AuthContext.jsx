@@ -9,15 +9,15 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const initAuth = () => {
-      const storedUser = localStorage.getItem('eightbit_user');
-      const token = localStorage.getItem('eightbit_token');
+      const storedUser = localStorage.getItem('dzenotech_user');
+      const token = localStorage.getItem('dzenotech_token');
       
       if (storedUser && token) {
         try {
           setUser(JSON.parse(storedUser));
         } catch (e) {
-          localStorage.removeItem('eightbit_user');
-          localStorage.removeItem('eightbit_token');
+          localStorage.removeItem('dzenotech_user');
+          localStorage.removeItem('dzenotech_token');
         }
       }
       setLoading(false);
@@ -27,14 +27,14 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData, token) => {
-    localStorage.setItem('eightbit_token', token);
-    localStorage.setItem('eightbit_user', JSON.stringify(userData));
+    localStorage.setItem('dzenotech_token', token);
+    localStorage.setItem('dzenotech_user', JSON.stringify(userData));
     setUser(userData);
   };
 
   const logout = () => {
-    localStorage.removeItem('eightbit_token');
-    localStorage.removeItem('eightbit_user');
+    localStorage.removeItem('dzenotech_token');
+    localStorage.removeItem('dzenotech_user');
     setUser(null);
   };
 

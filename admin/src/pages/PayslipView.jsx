@@ -127,7 +127,7 @@ const PayslipTemplate = ({ data }) => {
       {/* Header */}
       <div className="payslip-header">
         <h2 style={{ margin: 0, fontSize: '22px', fontWeight: '700', letterSpacing: '0.5px' }}>
-          Eight Bit Pvt. Ltd.
+          Dzeno Tech Nepal
         </h2>
         <div style={{ fontSize: '14px', marginTop: '4px', opacity: 0.85 }}>Lalitpur, Nepal</div>
         <div className="payslip-divider" />

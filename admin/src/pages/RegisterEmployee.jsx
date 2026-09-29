@@ -96,7 +96,7 @@ const RegisterEmployee = () => {
           {sectionTitle(1, 'Personal & Job Information')}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
             {field('Full Name', inp('name', 'text', 'Sujan Aryal', true), true)}
-            {field('Email Address', inp('email', 'email', 'sujan@eightbit.com.np', true), true)}
+            {field('Email Address', inp('email', 'email', 'sujan@dzenotech.com.np', true), true)}
             {field('Password', inp('password', 'password', 'Set initial password', true), true)}
             {field('Phone Number', inp('phone', 'tel', '+977-98XXXXXXXX'))}
             {field('PAN Number', inp('panNumber', 'text', '108100862'))}

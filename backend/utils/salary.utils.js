@@ -1,5 +1,5 @@
 /**
- * Compute Nepal SSF salary breakdown for Eight Bit Pvt. Ltd.
+ * Compute Nepal SSF salary breakdown for Dzeno Tech Nepal
  *
  * Payslip rules:
  *  - SSF Employer Contribution (20%): added to gross   → basicSalary * 0.20

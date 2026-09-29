@@ -21,9 +21,9 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="sidebar-header">
         <div className="w-8 h-8 rounded bg-blue-600 flex items-center justify-center font-bold text-white" style={{backgroundColor: '#3b82f6'}}>
-          8B
+          DT
         </div>
-        <div className="font-bold">Eight Bit Pvt. Ltd.</div>
+        <div className="font-bold">Dzeno Tech Nepal</div>
       </div>
       
       <nav className="sidebar-nav">

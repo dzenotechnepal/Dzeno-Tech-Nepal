@@ -37,9 +37,9 @@ const Login = () => {
             justifyContent: 'center', fontWeight: '800', color: '#fff',
             fontSize: '22px', margin: '0 auto 12px',
           }}>
-            8B
+            DT
           </div>
-          <h2 style={{ margin: 0 }}>Eight Bit Pvt. Ltd.</h2>
+          <h2 style={{ margin: 0 }}>Dzeno Tech Nepal</h2>
           <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0', fontSize: '14px' }}>
             Company Operations Portal
           </p>
@@ -54,7 +54,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="superadmin@eightbit.com.np"
+              placeholder="superadmin@dzenotech.com.np"
               autoComplete="email"
             />
           </div>
@@ -83,7 +83,7 @@ const Login = () => {
         </form>
 
         <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '12px', color: 'var(--text-secondary)' }}>
-          Default superadmin: superadmin@eightbit.com.np
+          Default superadmin: superadmin@dzenotech.com.np
         </p>
       </div>
     </div>

@@ -5,7 +5,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('eightbit_token');
+  const token = localStorage.getItem('dzenotech_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -16,8 +16,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('eightbit_token');
-      localStorage.removeItem('eightbit_user');
+      localStorage.removeItem('dzenotech_token');
+      localStorage.removeItem('dzenotech_user');
       window.location.href = '/admin/login';
     }
     return Promise.reject(error);
