@@ -23,8 +23,26 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(helmet());
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://admin.dzenotechnepal.com.np',
+  'http://admin.dzenotechnepal.com.np',
+  'https://dzenotechnepal.com.np'
+];
+
+if (process.env.FRONTEND_URL) allowedOrigins.push(...process.env.FRONTEND_URL.split(','));
+if (process.env.ADMIN_URL) allowedOrigins.push(...process.env.ADMIN_URL.split(','));
+
 app.use(cors({
-  origin: [process.env.FRONTEND_URL || 'http://localhost:5173', process.env.ADMIN_URL || 'http://localhost:5174'],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl) or if origin is in our allowed list
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
