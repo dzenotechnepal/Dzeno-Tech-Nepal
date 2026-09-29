@@ -30,18 +30,11 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="card login-card">
-        <div className="login-logo" style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <div style={{
-            width: '56px', height: '56px', borderRadius: '12px',
-            background: '#3b82f6', display: 'flex', alignItems: 'center',
-            justifyContent: 'center', fontWeight: '800', color: '#fff',
-            fontSize: '22px', margin: '0 auto 12px',
-          }}>
-            DT
-          </div>
-          <h2 style={{ margin: 0 }}>Dzeno Tech Nepal</h2>
+        <div className="login-logo">
+          <img src="/logo.png" alt="Dzeno Tech Nepal" className="login-brand-image" />
+          <h1 className="login-title">Operations Portal</h1>
           <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0', fontSize: '14px' }}>
-            Company Operations Portal
+            Sign in to manage your work securely
           </p>
         </div>
 
@@ -54,7 +47,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="superadmin@dzenotech.com.np"
+              placeholder="you@company.com"
               autoComplete="email"
             />
           </div>
@@ -82,9 +75,7 @@ const Login = () => {
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '12px', color: 'var(--text-secondary)' }}>
-          Default superadmin: superadmin@dzenotech.com.np
-        </p>
+        <p className="login-footer">Use your company account credentials to continue.</p>
       </div>
     </div>
   );

@@ -137,6 +137,9 @@ const EmployeeDetail = () => {
                   ['Full Name', employee.name],
                   ['Email', employee.email],
                   ['Phone', employee.phone || '—'],
+                  ['Gender', employee.gender || '—'],
+                  ['Age', employee.age || '—'],
+                  ['Citizenship Number', employee.citizenshipNumber || '—'],
                   ['Address', employee.address || '—'],
                   ['PAN Number', employee.panNumber || '—'],
                   ['Joining Date', fmtDate(employee.joiningDate)],
@@ -173,9 +176,10 @@ const EmployeeDetail = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   {[
                     ['Bank Name', employee.bankName],
+                    ['Account Holder Name', employee.bankAccountHolderName],
                     ['Account Number', employee.bankAccountNumber],
                     ['Branch', employee.bankBranch],
-                    ['IFSC / Routing', employee.bankIFSC],
+                    ['SSF Enrollment', employee.ssfEnrolled ? 'Enrolled' : 'Not enrolled'],
                   ].map(([label, value]) => (
                     <div key={label} className="card" style={{ background: 'var(--bg-tertiary)', padding: '12px' }}>
                       <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>{label}</div>

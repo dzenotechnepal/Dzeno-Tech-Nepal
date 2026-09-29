@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Badge from '../components/ui/Badge';
+import api from '../api/axios';
+import toast from 'react-hot-toast';
 
 const Payslips = () => {
   const navigate = useNavigate();
-  const [payslips] = useState([
-    { id: '1', no: 'PS-2024-04-001', employeeName: 'Sujan Aryal', monthYear: 'April 2024', netPay: 32690, generatedBy: 'Admin', date: '2024-05-01' },
-    { id: '2', no: 'PS-2024-03-001', employeeName: 'Sujan Aryal', monthYear: 'March 2024', netPay: 32690, generatedBy: 'Admin', date: '2024-04-01' },
-  ]);
+  const [payslips, setPayslips] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPayslips = async () => {
+      try {
+        const res = await api.get('/payslips');
+        setPayslips(res.data.data || []);
+      } catch (err) {
+        toast.error(err.response?.data?.message || 'Failed to load payslips');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPayslips();
+  }, []);
 
   return (
     <div>
@@ -30,16 +44,24 @@ const Payslips = () => {
               </tr>
             </thead>
             <tbody>
-              {payslips.map(ps => (
-                <tr key={ps.id}>
-                  <td>{ps.no}</td>
-                  <td className="font-medium">{ps.employeeName}</td>
-                  <td>{ps.monthYear}</td>
-                  <td className="font-bold">NPR {ps.netPay.toLocaleString()}</td>
-                  <td>{ps.generatedBy}</td>
-                  <td>{ps.date}</td>
+              {loading ? (
+                <tr>
+                  <td colSpan="7" className="text-center text-secondary">Loading payslips...</td>
+                </tr>
+              ) : payslips.length === 0 ? (
+                <tr>
+                  <td colSpan="7" className="text-center text-secondary">No payslips found.</td>
+                </tr>
+              ) : payslips.map(ps => (
+                <tr key={ps._id}>
+                  <td>{ps.payslipNumber}</td>
+                  <td className="font-medium">{ps.employeeId?.name || '—'}</td>
+                  <td>{ps.monthName} {ps.year}</td>
+                  <td className="font-bold">NPR {Number(ps.salaryId?.netPay || 0).toLocaleString()}</td>
+                  <td>{ps.generatedBy?.name || '—'}</td>
+                  <td>{ps.generatedAt ? new Date(ps.generatedAt).toLocaleDateString('en-NP') : '—'}</td>
                   <td>
-                    <button className="btn btn-outline text-xs" onClick={() => navigate(`/admin/payslips/${ps.id}`)}>
+                    <button className="btn btn-outline text-xs" onClick={() => navigate(`/admin/payslips/${ps._id}`)}>
                       View & Print
                     </button>
                   </td>

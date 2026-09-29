@@ -11,19 +11,20 @@ const RegisterEmployee = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: '', email: '', phone: '', address: '',
+    name: '', email: '', phone: '', address: '', gender: '', age: '', citizenshipNumber: '',
     designation: '', department: '', role: 'employee',
     panNumber: '', joiningDate: '', password: '',
-    bankName: '', bankAccountNumber: '', bankBranch: '', bankIFSC: '',
+    bankName: '', bankAccountHolderName: '', bankAccountNumber: '', bankBranch: '',
+    ssfEnrolled: true,
     basicSalary: '', dearnessAllowance: '',
   });
 
   // Live salary preview
   const basic = parseFloat(formData.basicSalary) || 0;
   const da = parseFloat(formData.dearnessAllowance) || 0;
-  const ssfEmployer = parseFloat((basic * 0.20).toFixed(2));
+  const ssfEmployer = formData.ssfEnrolled ? parseFloat((basic * 0.20).toFixed(2)) : 0;
   const totalGross = parseFloat((basic + da + ssfEmployer).toFixed(2));
-  const ssfDeduction = parseFloat((basic * 0.31).toFixed(2));
+  const ssfDeduction = formData.ssfEnrolled ? parseFloat((basic * 0.31).toFixed(2)) : 0;
   const netPay = parseFloat((totalGross - ssfDeduction).toFixed(2));
 
   const handleChange = (e) => {
@@ -46,11 +47,15 @@ const RegisterEmployee = () => {
         phone: formData.phone,
         address: formData.address,
         panNumber: formData.panNumber,
+        gender: formData.gender || undefined,
+        age: formData.age ? Number(formData.age) : undefined,
+        citizenshipNumber: formData.citizenshipNumber || undefined,
         joiningDate: formData.joiningDate || undefined,
         bankName: formData.bankName || undefined,
+        bankAccountHolderName: formData.bankAccountHolderName || undefined,
         bankAccountNumber: formData.bankAccountNumber || undefined,
         bankBranch: formData.bankBranch || undefined,
-        bankIFSC: formData.bankIFSC || undefined,
+        ssfEnrolled: formData.ssfEnrolled,
       };
 
       const res = await api.post('/users/register', payload);
@@ -99,6 +104,16 @@ const RegisterEmployee = () => {
             {field('Email Address', inp('email', 'email', 'sujan@dzenotech.com.np', true), true)}
             {field('Password', inp('password', 'password', 'Set initial password', true), true)}
             {field('Phone Number', inp('phone', 'tel', '+977-98XXXXXXXX'))}
+            {field('Gender',
+              <select name="gender" className="select" value={formData.gender} onChange={handleChange}>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            )}
+            {field('Age', inp('age', 'number', '25'))}
+            {field('Citizenship Number', inp('citizenshipNumber', 'text', 'Citizenship number'))}
             {field('PAN Number', inp('panNumber', 'text', '108100862'))}
             {field('Joining Date', inp('joiningDate', 'date'))}
             {field('Designation', inp('designation', 'text', 'Software Developer', true), true)}
@@ -126,15 +141,19 @@ const RegisterEmployee = () => {
           {sectionTitle(2, 'Bank Information')}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
             {field('Bank Name', inp('bankName', 'text', 'Nepal Investment Bank'))}
+            {field('Account Holder Name', inp('bankAccountHolderName', 'text', 'Name on bank account'))}
             {field('Account Number', inp('bankAccountNumber', 'text', 'XXXXXXXXXXXX'))}
             {field('Branch', inp('bankBranch', 'text', 'Lalitpur Branch'))}
-            {field('IFSC / Routing Code', inp('bankIFSC', 'text', 'NIBPNPKA'))}
           </div>
         </div>
 
         {/* Section 3: Salary Preview */}
         <div className="card" style={{ marginBottom: '16px' }}>
           {sectionTitle(3, 'Salary Details (Nepal SSF Preview)')}
+          <label className="flex items-center gap-2 mb-4" style={{ cursor: 'pointer' }}>
+            <input type="checkbox" name="ssfEnrolled" checked={formData.ssfEnrolled} onChange={(e) => setFormData(prev => ({ ...prev, ssfEnrolled: e.target.checked }))} />
+            <span className="form-label" style={{ margin: 0 }}>Employee is enrolled in SSF</span>
+          </label>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '16px' }}>
             {field('Monthly Basic Salary (NPR)', inp('basicSalary', 'number', '21000'))}
             {field('Dearness Allowance (DA) (NPR)', inp('dearnessAllowance', 'number', '14000'))}

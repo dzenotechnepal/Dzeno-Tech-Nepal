@@ -2,6 +2,7 @@ import { Payslip } from '../models/Payslip.model.js';
 import { Salary } from '../models/Salary.model.js';
 import { User } from '../models/User.model.js';
 import { generatePayslipNumber } from '../utils/payslipNumber.utils.js';
+import mongoose from 'mongoose';
 
 export const generatePayslip = async (req, res) => {
   try {
@@ -50,8 +51,12 @@ export const getPayslips = async (req, res) => {
 
 export const getPayslipById = async (req, res) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(404).json({ success: false, message: 'Payslip not found' });
+    }
+
     const payslip = await Payslip.findById(req.params.id)
-      .populate('employeeId', 'name employeeId panNumber designation department bankName bankAccountNumber bankBranch bankIFSC')
+      .populate('employeeId', 'name employeeId panNumber designation department bankName bankAccountHolderName bankAccountNumber bankBranch')
       .populate('salaryId')
       .populate('generatedBy', 'name');
       

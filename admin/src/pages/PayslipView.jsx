@@ -126,6 +126,7 @@ const PayslipTemplate = ({ data }) => {
     <div className="payslip-box">
       {/* Header */}
       <div className="payslip-header">
+        <img src="/logo.png" alt="Dzeno Tech Nepal" style={{ width: '220px', maxWidth: '100%', marginBottom: '10px' }} />
         <h2 style={{ margin: 0, fontSize: '22px', fontWeight: '700', letterSpacing: '0.5px' }}>
           Dzeno Tech Nepal
         </h2>

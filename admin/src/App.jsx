@@ -19,6 +19,11 @@ import Payslips from './pages/Payslips';
 import PayslipView from './pages/PayslipView';
 import Leaves from './pages/Leaves';
 import Profile from './pages/Profile';
+import Customers from './pages/Customers';
+import Products from './pages/Products';
+import Holidays from './pages/Holidays';
+import Settings from './pages/Settings';
+import Contracts from './pages/Contracts';
 
 function App() {
   return (
@@ -39,6 +44,11 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={['admin', 'superadmin']} />}>
               <Route path="/admin/employees/register" element={<RegisterEmployee />} />
               <Route path="/admin/salary" element={<Salary />} />
+              <Route path="/admin/customers" element={<Customers />} />
+              <Route path="/admin/products" element={<Products />} />
+              <Route path="/admin/holidays" element={<Holidays />} />
+              <Route path="/admin/settings" element={<Settings />} />
+              <Route path="/admin/contracts" element={<Contracts />} />
             </Route>
             
             <Route path="/admin/employees/:id" element={<EmployeeDetail />} />

@@ -22,7 +22,8 @@ const Employees = () => {
     try {
       setLoading(true);
       const res = await api.get('/users', { params: { limit: 100 } });
-      setEmployees(res.data.data || []);
+      const data = res.data.data;
+      setEmployees(Array.isArray(data) ? data : data?.users || []);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to load employees');
     } finally {

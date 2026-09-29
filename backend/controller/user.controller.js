@@ -114,9 +114,9 @@ export const getRoles = (req, res) => {
 
 export const updateBankInfo = async (req, res) => {
   try {
-    const { bankName, bankAccountNumber, bankBranch, bankIFSC } = req.body;
+    const { bankName, bankAccountHolderName, bankAccountNumber, bankBranch } = req.body;
     const user = await User.findByIdAndUpdate(req.params.id, {
-      bankName, bankAccountNumber, bankBranch, bankIFSC
+      bankName, bankAccountHolderName, bankAccountNumber, bankBranch
     }, { new: true }).select('-password');
     
     if (!user) {
