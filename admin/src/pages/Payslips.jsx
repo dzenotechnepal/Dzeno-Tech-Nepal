@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FilePlus } from 'lucide-react';
+import Modal from '../components/ui/Modal';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 
@@ -7,27 +9,47 @@ const Payslips = () => {
   const navigate = useNavigate();
   const [payslips, setPayslips] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [salaries, setSalaries] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSalaryId, setSelectedSalaryId] = useState('');
+  const [generating, setGenerating] = useState(false);
 
-  useEffect(() => {
-    const fetchPayslips = async () => {
+  const fetchData = async () => {
       try {
-        const res = await api.get('/payslips');
-        setPayslips(res.data.data || []);
+        const [payslipResponse, salaryResponse] = await Promise.all([api.get('/payslips'), api.get('/salary')]);
+        setPayslips(Array.isArray(payslipResponse.data.data) ? payslipResponse.data.data : []);
+        setSalaries(Array.isArray(salaryResponse.data.data) ? salaryResponse.data.data : []);
       } catch (err) {
         toast.error(err.response?.data?.message || 'Failed to load payslips');
       } finally {
         setLoading(false);
       }
-    };
+  };
 
-    fetchPayslips();
-  }, []);
+  useEffect(() => { fetchData(); }, []);
+
+  const generatePayslip = async (event) => {
+    event.preventDefault();
+    if (!selectedSalaryId) return;
+    try {
+      setGenerating(true);
+      const response = await api.post('/payslips/generate', { salaryId: selectedSalaryId });
+      toast.success('Payslip generated from salary and attendance records');
+      setIsModalOpen(false);
+      navigate(`/admin/payslips/${response.data.data._id}`);
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to generate payslip');
+    } finally {
+      setGenerating(false);
+    }
+  };
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1>Payslips</h1>
       </div>
+      <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}><FilePlus size={16} /> Generate Payslip</button>
 
       <div className="card">
         <div className="table-container">
@@ -71,6 +93,24 @@ const Payslips = () => {
           </table>
         </div>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Generate Payslip">
+        <form className="flex flex-col gap-4" onSubmit={generatePayslip}>
+          <div className="form-group">
+            <label className="form-label">Salary Record</label>
+            <select className="select" value={selectedSalaryId} onChange={(event) => setSelectedSalaryId(event.target.value)} required>
+              <option value="">Select salary record...</option>
+              {salaries.map(salary => (
+                <option key={salary._id} value={salary._id}>
+                  {salary.employeeId?.name || 'Employee'} - {salary.monthName} {salary.year} - NPR {Number(salary.netPay || 0).toLocaleString('en-NP')}
+                </option>
+              ))}
+            </select>
+          </div>
+          <p className="text-secondary text-sm">The payslip will include the selected salary and attendance records for that employee and pay period.</p>
+          <button type="submit" className="btn btn-primary w-full" disabled={generating}>{generating ? 'Generating...' : 'Generate Payslip'}</button>
+        </form>
+      </Modal>
     </div>
   );
 };

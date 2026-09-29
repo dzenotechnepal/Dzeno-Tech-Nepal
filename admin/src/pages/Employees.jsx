@@ -100,6 +100,7 @@ const Employees = () => {
                   <th>Name</th>
                   <th>Designation</th>
                   <th>Department</th>
+                  <th>Joining Date</th>
                   <th>Role</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -116,6 +117,7 @@ const Employees = () => {
                     <td style={{ fontWeight: 500 }}>{emp.name}</td>
                     <td>{emp.designation || '—'}</td>
                     <td>{emp.department || '—'}</td>
+                    <td>{emp.joiningDate ? new Date(emp.joiningDate).toLocaleDateString('en-NP') : '—'}</td>
                     <td><Badge type={roleBadgeType(emp.role)}>{emp.role}</Badge></td>
                     <td>
                       <Badge type={emp.isActive ? 'green' : 'red'}>

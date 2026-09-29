@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Printer, ArrowLeft, Download } from 'lucide-react';
+import { ArrowLeft, Download } from 'lucide-react';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 
@@ -72,10 +72,11 @@ const PayslipView = () => {
     da: salary.dearnessAllowance || 0,
     ssfEmployer: salary.ssfEmployerContribution || 0,
     totalGross: salary.totalGrossPay || 0,
-    ssfDeduction: salary.ssfEmployeeDeduction || 0,
+    ssfDeduction: salary.ssfEmployeeContribution || 0,
     cit: salary.citAmount || 0,
     tax: salary.taxAmount || 0,
     netPay: salary.netPay || 0,
+    attendanceSummary: payslip.attendanceSummary || {},
     generatedBy: payslip.generatedBy?.name || 'Admin',
     generatedAt: payslip.generatedAt
       ? new Date(payslip.generatedAt).toLocaleDateString('en-NP')
@@ -96,13 +97,23 @@ const PayslipView = () => {
           </div>
         </div>
         <button className="btn btn-primary" onClick={handlePrint}>
-          <Printer size={16} /> Print / Download PDF
+          <Download size={16} /> Download PDF
         </button>
       </div>
 
       {/* Card wrapper (screen only) */}
       <div className="card no-print" style={{ padding: '32px', display: 'flex', justifyContent: 'center', background: 'var(--bg-card)' }}>
         <PayslipTemplate data={data} />
+      </div>
+
+      <div className="card no-print payslip-attendance-summary">
+        <h3>Attendance Used</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div><span className="text-secondary text-sm">Present</span><strong>{data.attendanceSummary.present || 0}</strong></div>
+          <div><span className="text-secondary text-sm">Half Days</span><strong>{data.attendanceSummary.halfDay || 0}</strong></div>
+          <div><span className="text-secondary text-sm">Leave / Absent</span><strong>{(data.attendanceSummary.leave || 0) + (data.attendanceSummary.absent || 0)}</strong></div>
+          <div><span className="text-secondary text-sm">Total Hours</span><strong>{data.attendanceSummary.totalHours || 0}h</strong></div>
+        </div>
       </div>
 
       {/* Print-only version (full page) */}
@@ -155,6 +166,14 @@ const PayslipTemplate = ({ data }) => {
           <span className="payslip-label">Period</span>
           <span className="payslip-value">{data.period}</span>
         </div>
+      </div>
+
+      <div className="payslip-section-title">Attendance Summary</div>
+      <div className="payslip-info-grid payslip-attendance-print-grid">
+        <div className="payslip-info-cell"><span className="payslip-label">Present Days</span><span className="payslip-value">{data.attendanceSummary.present || 0}</span></div>
+        <div className="payslip-info-cell"><span className="payslip-label">Half Days</span><span className="payslip-value">{data.attendanceSummary.halfDay || 0}</span></div>
+        <div className="payslip-info-cell"><span className="payslip-label">Leave / Absent</span><span className="payslip-value">{(data.attendanceSummary.leave || 0) + (data.attendanceSummary.absent || 0)}</span></div>
+        <div className="payslip-info-cell"><span className="payslip-label">Total Hours</span><span className="payslip-value">{data.attendanceSummary.totalHours || 0}h</span></div>
       </div>
 
       {/* Net Pay Calculation */}

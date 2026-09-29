@@ -15,6 +15,11 @@ import salaryRouter from './routes/salary.routes.js';
 import payslipRouter from './routes/payslip.routes.js';
 import leaveRouter from './routes/leave.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
+import customerRouter from './routes/customer.routes.js';
+import productRouter from './routes/product.routes.js';
+import holidayRouter from './routes/holiday.routes.js';
+import contractRouter from './routes/contract.routes.js';
+import settingRouter from './routes/setting.routes.js';
 
 dotenv.config();
 
@@ -72,6 +77,11 @@ app.use('/api/salary', salaryRouter);
 app.use('/api/payslips', payslipRouter);
 app.use('/api/leave', leaveRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/customers', customerRouter);
+app.use('/api/products', productRouter);
+app.use('/api/holidays', holidayRouter);
+app.use('/api/contracts', contractRouter);
+app.use('/api/settings', settingRouter);
 
 connectToMongoDB()
   .then(() => {

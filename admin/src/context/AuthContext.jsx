@@ -38,6 +38,11 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const updateUser = (userData) => {
+    localStorage.setItem('dzenotech_user', JSON.stringify(userData));
+    setUser(userData);
+  };
+
   const hasRole = (roles) => {
     if (!user) return false;
     if (typeof roles === 'string') return user.role === roles;
@@ -45,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading, hasRole }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser, loading, hasRole }}>
       {!loading && children}
     </AuthContext.Provider>
   );

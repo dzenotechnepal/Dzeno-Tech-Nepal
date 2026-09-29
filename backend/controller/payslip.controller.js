@@ -3,6 +3,7 @@ import { Salary } from '../models/Salary.model.js';
 import { User } from '../models/User.model.js';
 import { generatePayslipNumber } from '../utils/payslipNumber.utils.js';
 import mongoose from 'mongoose';
+import { Attendance } from '../models/Attendance.model.js';
 
 export const generatePayslip = async (req, res) => {
   try {
@@ -19,6 +20,19 @@ export const generatePayslip = async (req, res) => {
     }
 
     const payslipNumber = await generatePayslipNumber(salary.year, salary.month);
+    const attendanceRecords = await Attendance.find({
+      employeeId: salary.employeeId,
+      month: salary.month,
+      year: salary.year,
+    }).select('status workHours').lean();
+    const attendanceSummary = attendanceRecords.reduce((summary, record) => {
+      if (record.status === 'present') summary.present += 1;
+      if (record.status === 'half-day') summary.halfDay += 1;
+      if (record.status === 'absent') summary.absent += 1;
+      if (record.status === 'leave') summary.leave += 1;
+      summary.totalHours += record.workHours || 0;
+      return summary;
+    }, { present: 0, halfDay: 0, absent: 0, leave: 0, totalHours: 0 });
 
     const payslip = new Payslip({
       employeeId: salary.employeeId,
@@ -27,7 +41,8 @@ export const generatePayslip = async (req, res) => {
       year: salary.year,
       monthName: salary.monthName,
       generatedBy: req.user.id,
-      payslipNumber
+      payslipNumber,
+      attendanceSummary: { ...attendanceSummary, totalHours: parseFloat(attendanceSummary.totalHours.toFixed(2)) }
     });
 
     await payslip.save();

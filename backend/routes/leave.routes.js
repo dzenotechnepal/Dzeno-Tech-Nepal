@@ -1,6 +1,6 @@
 import express from 'express';
 import { 
-  applyLeave, getLeaves, approveLeave, rejectLeave, getEmployeeLeaves 
+  applyLeave, getLeaves, approveLeave, rejectLeave, deleteLeave, getEmployeeLeaves 
 } from '../controller/leave.controller.js';
 import { authenticate, authorize } from '../middleware/auth.middleware.js';
 
@@ -13,6 +13,7 @@ router.get('/employee/:id', getEmployeeLeaves);
 
 // Both employee and admin hit the same getLeaves endpoint
 router.get('/', getLeaves);
+router.delete('/:id', deleteLeave);
 
 router.use(authorize('superadmin', 'admin', 'ceo'));
 

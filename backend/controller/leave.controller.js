@@ -4,12 +4,19 @@ export const applyLeave = async (req, res) => {
   try {
     const { leaveType, startDate, endDate, totalDays, reason } = req.body;
 
+    if (!leaveType || !startDate || !endDate || !reason?.trim()) {
+      return res.status(400).json({ success: false, message: 'Leave type, dates, and reason are required' });
+    }
+    if (new Date(endDate) < new Date(startDate)) {
+      return res.status(400).json({ success: false, message: 'End date cannot be before start date' });
+    }
+
     const leave = new Leave({
       employeeId: req.user.id,
       leaveType,
       startDate,
       endDate,
-      totalDays,
+      totalDays: Number(totalDays) || 1,
       reason,
       status: 'pending'
     });
@@ -61,6 +68,24 @@ export const rejectLeave = async (req, res) => {
 
     if (!leave) return res.status(404).json({ success: false, message: 'Leave not found' });
     return res.status(200).json({ success: true, data: leave, message: 'Leave rejected' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const deleteLeave = async (req, res) => {
+  try {
+    const leave = await Leave.findById(req.params.id);
+    if (!leave) return res.status(404).json({ success: false, message: 'Leave not found' });
+    const isAdmin = ['superadmin', 'admin', 'ceo'].includes(req.user.role);
+    if (!isAdmin && String(leave.employeeId) !== String(req.user.id)) {
+      return res.status(403).json({ success: false, message: 'You can only cancel your own leave' });
+    }
+    if (!isAdmin && leave.status !== 'pending') {
+      return res.status(400).json({ success: false, message: 'Only pending leave can be cancelled' });
+    }
+    await leave.deleteOne();
+    return res.status(200).json({ success: true, message: 'Leave cancelled' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

@@ -72,10 +72,6 @@ const Sidebar = ({ onNavigate }) => {
               <CalendarDays size={20} />
               <span>Holidays</span>
             </NavLink>
-            <NavLink onClick={onNavigate} to="/admin/settings" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
-              <Settings size={20} />
-              <span>Settings</span>
-            </NavLink>
             <NavLink onClick={onNavigate} to="/admin/contracts" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
               <FileSignature size={20} />
               <span>Contracts</span>
@@ -92,6 +88,13 @@ const Sidebar = ({ onNavigate }) => {
           <CalendarOff size={20} />
           <span>Leaves</span>
         </NavLink>
+
+        {isAdmin && (
+          <NavLink onClick={onNavigate} to="/admin/settings" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
+            <Settings size={20} />
+            <span>Settings</span>
+          </NavLink>
+        )}
       </nav>
       
       <div className="sidebar-footer">

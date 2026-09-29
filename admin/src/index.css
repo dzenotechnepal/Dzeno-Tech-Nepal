@@ -393,6 +393,184 @@ h3 { font-size: 1.25rem; font-weight: 500; }
   margin: 0;
 }
 
+.customer-filters {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.customer-search {
+  flex: 1;
+  position: relative;
+}
+
+.customer-search .input {
+  padding-left: 2.25rem;
+}
+
+.customer-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  z-index: 1;
+  color: var(--text-secondary);
+  transform: translateY(-50%);
+}
+
+.customer-status-filter {
+  width: 160px;
+}
+
+.settings-section {
+  margin-bottom: 1rem;
+}
+
+.settings-section h3 {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 2fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.profile-summary {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.profile-summary h2,
+.profile-summary p {
+  margin-bottom: 0.35rem;
+}
+
+.profile-summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.profile-form h3,
+.password-card h3 {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.password-card {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-form .grid-cols-2,
+  .password-card .grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.holiday-year-filter {
+  width: 120px;
+}
+
+@media (max-width: 640px) {
+  .customer-filters {
+    flex-direction: column;
+  }
+
+  .customer-status-filter {
+    width: 100%;
+  }
+
+  .holiday-year-filter {
+    width: 100%;
+  }
+}
+
+.attendance-calendar-card {
+  margin-bottom: 1.5rem;
+}
+
+.attendance-calendar-header,
+.attendance-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.attendance-calendar-header {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.attendance-day {
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  background: var(--bg-primary);
+}
+
+.attendance-day.is-empty {
+  min-height: 0;
+  border-color: transparent;
+  background: transparent;
+}
+
+.attendance-day small {
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+}
+
+.attendance-records-card h3 {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+  .attendance-calendar-header,
+  .attendance-calendar-grid {
+    gap: 0.25rem;
+  }
+
+  .attendance-day {
+    min-height: 76px;
+    padding: 0.35rem;
+    font-size: 0.8rem;
+  }
+
+  .attendance-day .badge {
+    align-self: flex-start;
+    padding-inline: 0.35rem;
+    font-size: 0.65rem;
+  }
+}
+
 /* Login Page */
 .login-container {
   min-height: 100vh;

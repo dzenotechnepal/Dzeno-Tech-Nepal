@@ -23,4 +23,7 @@ const salarySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+salarySchema.index({ month: 1, year: 1, isPaid: 1 });
+salarySchema.index({ employeeId: 1, year: -1, month: -1 });
+
 export const Salary = mongoose.model('Salary', salarySchema);

@@ -46,4 +46,7 @@ userSchema.pre('save', async function () {
   }
 });
 
+userSchema.index({ isActive: 1, createdAt: -1 });
+userSchema.index({ name: 1 });
+
 export const User = mongoose.model('User', userSchema);

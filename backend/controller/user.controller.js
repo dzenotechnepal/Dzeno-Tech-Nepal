@@ -42,13 +42,15 @@ export const getUsers = async (req, res) => {
       query.role = role;
     }
 
-    const users = await User.find(query)
-      .select('-password')
-      .skip((page - 1) * limit)
-      .limit(Number(limit))
-      .sort({ createdAt: -1 });
-
-    const total = await User.countDocuments(query);
+    const [users, total] = await Promise.all([
+      User.find(query)
+        .select('name email role designation department employeeId panNumber gender age citizenshipNumber phone address isActive bankName bankAccountHolderName bankAccountNumber bankBranch ssfEnrolled avatar joiningDate createdAt')
+        .skip((page - 1) * limit)
+        .limit(Number(limit))
+        .sort({ createdAt: -1 })
+        .lean(),
+      User.countDocuments(query),
+    ]);
 
     return res.status(200).json({ 
       success: true, 
