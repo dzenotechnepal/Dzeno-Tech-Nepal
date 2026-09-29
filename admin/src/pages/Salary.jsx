@@ -11,8 +11,9 @@ const Salary = () => {
   ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  const [basic, setBasic] = useState(21000);
-  const [da, setDa] = useState(14000);
+  const [specificAmount, setSpecificAmount] = useState(35000);
+  const basic = specificAmount * 0.6225;
+  const da = specificAmount * 0.3775;
 
   const ssfEmployer = basic * 0.2;
   const gross = basic + da + ssfEmployer;
@@ -95,12 +96,16 @@ const Salary = () => {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="form-group">
-              <label className="form-label">Basic Salary</label>
-              <input type="number" className="input" value={basic} onChange={(e) => setBasic(Number(e.target.value))} />
+              <label className="form-label">Specific Amount</label>
+              <input type="number" className="input" value={specificAmount} onChange={(e) => setSpecificAmount(Number(e.target.value))} />
             </div>
             <div className="form-group">
-              <label className="form-label">DA</label>
-              <input type="number" className="input" value={da} onChange={(e) => setDa(Number(e.target.value))} />
+              <label className="form-label">Basic Salary (62.25%)</label>
+              <input type="text" className="input" value={basic.toFixed(2)} readOnly />
+            </div>
+            <div className="form-group">
+              <label className="form-label">DA (37.75%)</label>
+              <input type="text" className="input" value={da.toFixed(2)} readOnly />
             </div>
           </div>
           <div className="bg-bg-tertiary p-4 rounded-md text-sm">

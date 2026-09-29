@@ -16,12 +16,13 @@ const RegisterEmployee = () => {
     panNumber: '', joiningDate: '', password: '',
     bankName: '', bankAccountHolderName: '', bankAccountNumber: '', bankBranch: '',
     ssfEnrolled: true,
-    basicSalary: '', dearnessAllowance: '',
+    specificAmount: '',
   });
 
   // Live salary preview
-  const basic = parseFloat(formData.basicSalary) || 0;
-  const da = parseFloat(formData.dearnessAllowance) || 0;
+  const specificAmount = parseFloat(formData.specificAmount) || 0;
+  const basic = parseFloat((specificAmount * 0.6225).toFixed(2));
+  const da = parseFloat((specificAmount * 0.3775).toFixed(2));
   const ssfEmployer = formData.ssfEnrolled ? parseFloat((basic * 0.20).toFixed(2)) : 0;
   const totalGross = parseFloat((basic + da + ssfEmployer).toFixed(2));
   const ssfDeduction = formData.ssfEnrolled ? parseFloat((basic * 0.31).toFixed(2)) : 0;
@@ -155,8 +156,9 @@ const RegisterEmployee = () => {
             <span className="form-label" style={{ margin: 0 }}>Employee is enrolled in SSF</span>
           </label>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '16px' }}>
-            {field('Monthly Basic Salary (NPR)', inp('basicSalary', 'number', '21000'))}
-            {field('Dearness Allowance (DA) (NPR)', inp('dearnessAllowance', 'number', '14000'))}
+            {field('Specific Amount (NPR)', inp('specificAmount', 'number', '35000'))}
+            {field('Basic Salary (62.25%)', <input type="text" className="input" value={basic ? basic.toLocaleString() : ''} readOnly />)}
+            {field('Dearness Allowance (DA) (37.75%)', <input type="text" className="input" value={da ? da.toLocaleString() : ''} readOnly />)}
           </div>
 
           {basic > 0 && (

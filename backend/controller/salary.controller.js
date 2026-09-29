@@ -4,12 +4,15 @@ import { computeSalaryBreakdown } from '../utils/salary.utils.js';
 
 export const createSalary = async (req, res) => {
   try {
-    const { employeeId, month, year, monthlyBasicSalary, dearnessAllowance, taxAmount, payPeriodStart, payPeriodEnd } = req.body;
+    const { employeeId, month, year, specificAmount, monthlyBasicSalary, dearnessAllowance, taxAmount, payPeriodStart, payPeriodEnd } = req.body;
 
     const user = await User.findById(employeeId);
     if (!user) return res.status(404).json({ success: false, message: 'Employee not found' });
 
-    const breakdown = computeSalaryBreakdown(Number(monthlyBasicSalary), Number(dearnessAllowance || 0));
+    const amount = specificAmount !== undefined
+      ? Number(specificAmount)
+      : Number(monthlyBasicSalary || 0) + Number(dearnessAllowance || 0);
+    const breakdown = computeSalaryBreakdown(amount);
 
     // Deduct tax from netPay after initial computation
     const finalTaxAmount = Number(taxAmount || 0);
@@ -71,7 +74,7 @@ export const getSalaryById = async (req, res) => {
 
 export const updateSalary = async (req, res) => {
   try {
-    const { monthlyBasicSalary, dearnessAllowance, taxAmount, payPeriodStart, payPeriodEnd, isPaid } = req.body;
+    const { specificAmount, monthlyBasicSalary, dearnessAllowance, taxAmount, payPeriodStart, payPeriodEnd, isPaid } = req.body;
     
     const salary = await Salary.findById(req.params.id);
     if (!salary) return res.status(404).json({ success: false, message: 'Salary not found' });
@@ -79,10 +82,12 @@ export const updateSalary = async (req, res) => {
     let finalNetPay = salary.netPay;
     let finalTaxAmount = salary.taxAmount;
 
-    if (monthlyBasicSalary !== undefined || dearnessAllowance !== undefined) {
-      const basic = monthlyBasicSalary !== undefined ? Number(monthlyBasicSalary) : salary.monthlyBasicSalary;
-      const da = dearnessAllowance !== undefined ? Number(dearnessAllowance) : salary.dearnessAllowance;
-      const breakdown = computeSalaryBreakdown(basic, da);
+    if (specificAmount !== undefined || monthlyBasicSalary !== undefined || dearnessAllowance !== undefined) {
+      const amount = specificAmount !== undefined
+        ? Number(specificAmount)
+        : Number(monthlyBasicSalary !== undefined ? monthlyBasicSalary : salary.monthlyBasicSalary) +
+          Number(dearnessAllowance !== undefined ? dearnessAllowance : salary.dearnessAllowance);
+      const breakdown = computeSalaryBreakdown(amount);
       
       salary.monthlyBasicSalary = breakdown.monthlyBasicSalary;
       salary.dearnessAllowance = breakdown.dearnessAllowance;
