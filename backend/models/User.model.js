@@ -27,25 +27,18 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function () {
   if (this.isNew && (!this.employeeId || this.employeeId === '')) {
-    try {
-      const lastUser = await mongoose.model('User').findOne({}, {}, { sort: { createdAt: -1 } });
-      let nextIdNum = 1;
-      if (lastUser && lastUser.employeeId && lastUser.employeeId.startsWith('EMP-')) {
-        const parts = lastUser.employeeId.split('-');
-        const lastNum = parseInt(parts[1], 10);
-        if (!isNaN(lastNum)) {
-          nextIdNum = lastNum + 1;
-        }
+    const lastUser = await mongoose.model('User').findOne({}, {}, { sort: { createdAt: -1 } });
+    let nextIdNum = 1;
+    if (lastUser && lastUser.employeeId && lastUser.employeeId.startsWith('EMP-')) {
+      const parts = lastUser.employeeId.split('-');
+      const lastNum = parseInt(parts[1], 10);
+      if (!isNaN(lastNum)) {
+        nextIdNum = lastNum + 1;
       }
-      this.employeeId = `EMP-${nextIdNum.toString().padStart(3, '0')}`;
-      next();
-    } catch (error) {
-      next(error);
     }
-  } else {
-    next();
+    this.employeeId = `EMP-${nextIdNum.toString().padStart(3, '0')}`;
   }
 });
 
