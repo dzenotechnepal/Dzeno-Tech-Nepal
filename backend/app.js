@@ -20,6 +20,7 @@ import productRouter from './routes/product.routes.js';
 import holidayRouter from './routes/holiday.routes.js';
 import contractRouter from './routes/contract.routes.js';
 import settingRouter from './routes/setting.routes.js';
+import emailRouter from './routes/email.routes.js';
 
 dotenv.config();
 
@@ -82,6 +83,7 @@ app.use('/api/products', productRouter);
 app.use('/api/holidays', holidayRouter);
 app.use('/api/contracts', contractRouter);
 app.use('/api/settings', settingRouter);
+app.use('/api/email', emailRouter);
 
 connectToMongoDB()
   .then(() => {
