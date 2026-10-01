@@ -48,7 +48,6 @@ function App() {
               <Route path="/admin/products" element={<Products />} />
               <Route path="/admin/holidays" element={<Holidays />} />
               <Route path="/admin/settings" element={<Settings />} />
-              <Route path="/admin/contracts" element={<Contracts />} />
             </Route>
             
             <Route path="/admin/employees/:id" element={<EmployeeDetail />} />
@@ -56,6 +55,7 @@ function App() {
             <Route path="/admin/payslips" element={<Payslips />} />
             <Route path="/admin/payslips/:id" element={<PayslipView />} />
             <Route path="/admin/leaves" element={<Leaves />} />
+            <Route path="/admin/contracts" element={<Contracts />} />
             <Route path="/admin/profile" element={<Profile />} />
           </Route>
           

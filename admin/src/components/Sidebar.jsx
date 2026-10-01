@@ -58,7 +58,7 @@ const Sidebar = ({ onNavigate }) => {
           </NavLink>
         )}
 
-        {isAdmin && (
+        {isAdmin ? (
           <>
             <NavLink onClick={onNavigate} to="/admin/customers" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
               <UsersRound size={20} />
@@ -72,12 +72,13 @@ const Sidebar = ({ onNavigate }) => {
               <CalendarDays size={20} />
               <span>Holidays</span>
             </NavLink>
-            <NavLink onClick={onNavigate} to="/admin/contracts" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
-              <FileSignature size={20} />
-              <span>Contracts</span>
-            </NavLink>
           </>
-        )}
+        ) : null}
+
+        <NavLink onClick={onNavigate} to="/admin/contracts" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
+          <FileSignature size={20} />
+          <span>Contracts</span>
+        </NavLink>
         
         <NavLink onClick={onNavigate} to="/admin/payslips" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
           <FileText size={20} />
@@ -99,7 +100,7 @@ const Sidebar = ({ onNavigate }) => {
       
       <div className="sidebar-footer">
         <NavLink onClick={onNavigate} to="/admin/profile" className={({isActive}) => `flex items-center gap-3 p-2 rounded hover:bg-bg-tertiary transition-colors ${isActive ? 'bg-bg-tertiary' : ''}`}>
-          <UserCircle size={32} className="text-secondary" />
+          {user?.avatar ? <img src={user.avatar} alt="" style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} /> : <UserCircle size={32} className="text-secondary" />}
           <div className="flex flex-col overflow-hidden">
             <span className="font-medium text-sm truncate">{user?.name || 'User'}</span>
             <Badge type={isAdmin ? 'blue' : 'gray'} className="w-fit text-xs px-1.5 py-0">

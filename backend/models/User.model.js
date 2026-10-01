@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema(
     bankBranch: { type: String },
     ssfEnrolled: { type: Boolean, default: true },
     avatar: { type: String },
+    avatarPublicId: { type: String },
     joiningDate: { type: Date, default: Date.now },
   },
   { timestamps: true }

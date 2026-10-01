@@ -12,11 +12,10 @@ export const createSalary = async (req, res) => {
     const amount = specificAmount !== undefined
       ? Number(specificAmount)
       : Number(monthlyBasicSalary || 0) + Number(dearnessAllowance || 0);
-    const breakdown = computeSalaryBreakdown(amount);
+    const breakdown = computeSalaryBreakdown(amount, 0, user.ssfEnrolled);
 
-    // Deduct tax from netPay after initial computation
-    const finalTaxAmount = Number(taxAmount || 0);
-    const finalNetPay = breakdown.netPay - finalTaxAmount;
+    const finalTaxAmount = user.ssfEnrolled ? Number(taxAmount || 0) : breakdown.taxAmount;
+    const finalNetPay = user.ssfEnrolled ? breakdown.netPay - finalTaxAmount : breakdown.netPay;
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const monthName = monthNames[month - 1];
@@ -78,6 +77,8 @@ export const updateSalary = async (req, res) => {
     
     const salary = await Salary.findById(req.params.id);
     if (!salary) return res.status(404).json({ success: false, message: 'Salary not found' });
+    const user = await User.findById(salary.employeeId);
+    if (!user) return res.status(404).json({ success: false, message: 'Employee not found' });
 
     let finalNetPay = salary.netPay;
     let finalTaxAmount = salary.taxAmount;
@@ -87,7 +88,7 @@ export const updateSalary = async (req, res) => {
         ? Number(specificAmount)
         : Number(monthlyBasicSalary !== undefined ? monthlyBasicSalary : salary.monthlyBasicSalary) +
           Number(dearnessAllowance !== undefined ? dearnessAllowance : salary.dearnessAllowance);
-      const breakdown = computeSalaryBreakdown(amount);
+      const breakdown = computeSalaryBreakdown(amount, 0, user.ssfEnrolled);
       
       salary.monthlyBasicSalary = breakdown.monthlyBasicSalary;
       salary.dearnessAllowance = breakdown.dearnessAllowance;
@@ -96,10 +97,10 @@ export const updateSalary = async (req, res) => {
       salary.ssfEmployeeContribution = breakdown.ssfEmployeeDeduction;
       salary.citAmount = breakdown.citAmount;
       
-      finalTaxAmount = taxAmount !== undefined ? Number(taxAmount) : salary.taxAmount;
-      finalNetPay = breakdown.netPay - finalTaxAmount;
+      finalTaxAmount = user.ssfEnrolled ? (taxAmount !== undefined ? Number(taxAmount) : salary.taxAmount) : breakdown.taxAmount;
+      finalNetPay = user.ssfEnrolled ? breakdown.netPay - finalTaxAmount : breakdown.netPay;
     } else if (taxAmount !== undefined) {
-      finalTaxAmount = Number(taxAmount);
+      finalTaxAmount = user.ssfEnrolled ? Number(taxAmount) : parseFloat((Number(salary.monthlyBasicSalary + salary.dearnessAllowance) * 0.01).toFixed(2));
       // Recompute net pay with new tax but old breakdown
       const oldGrossAfterDeds = salary.totalGrossPay - salary.ssfEmployeeContribution - salary.citAmount;
       finalNetPay = oldGrossAfterDeds - finalTaxAmount;

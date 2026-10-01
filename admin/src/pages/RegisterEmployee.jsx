@@ -26,7 +26,8 @@ const RegisterEmployee = () => {
   const ssfEmployer = formData.ssfEnrolled ? parseFloat((basic * 0.20).toFixed(2)) : 0;
   const totalGross = parseFloat((basic + da + ssfEmployer).toFixed(2));
   const ssfDeduction = formData.ssfEnrolled ? parseFloat((basic * 0.31).toFixed(2)) : 0;
-  const netPay = parseFloat((totalGross - ssfDeduction).toFixed(2));
+  const tax = formData.ssfEnrolled ? 0 : parseFloat((specificAmount * 0.01).toFixed(2));
+  const netPay = parseFloat((totalGross - ssfDeduction - tax).toFixed(2));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -173,11 +174,12 @@ const RegisterEmployee = () => {
                   ['SSF Employer (20%)', `+ NPR ${ssfEmployer.toLocaleString()}`],
                   ['Total Gross Pay', `NPR ${totalGross.toLocaleString()}`],
                   ['SSF Deduction (31%)', `− NPR ${ssfDeduction.toLocaleString()}`],
+                  ['Tax (1%)', `− NPR ${tax.toLocaleString()}`],
                   ['Net Pay', `NPR ${netPay.toLocaleString()}`],
                 ].map(([label, value], i) => (
                   <React.Fragment key={i}>
                     <span style={{ color: 'var(--text-secondary)' }}>{label}</span>
-                    <span style={{ fontWeight: i === 3 || i === 5 ? '700' : '400', color: i === 5 ? 'var(--success)' : undefined }}>
+                    <span style={{ fontWeight: i === 3 || i === 6 ? '700' : '400', color: i === 6 ? 'var(--success)' : undefined }}>
                       {value}
                     </span>
                   </React.Fragment>

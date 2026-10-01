@@ -71,7 +71,7 @@ export const getPayslipById = async (req, res) => {
     }
 
     const payslip = await Payslip.findById(req.params.id)
-      .populate('employeeId', 'name employeeId panNumber designation department bankName bankAccountHolderName bankAccountNumber bankBranch')
+      .populate('employeeId', 'name employeeId panNumber designation department bankName bankAccountHolderName bankAccountNumber bankBranch ssfEnrolled')
       .populate('salaryId')
       .populate('generatedBy', 'name');
       

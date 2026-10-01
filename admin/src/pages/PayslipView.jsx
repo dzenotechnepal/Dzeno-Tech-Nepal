@@ -67,6 +67,7 @@ const PayslipView = () => {
     employeeName: employee.name || '—',
     panNumber: employee.panNumber || '—',
     designation: employee.designation || '—',
+    ssfEnrolled: employee.ssfEnrolled !== false,
     period: `${periodStart} – ${periodEnd}`,
     monthlyBasic: salary.monthlyBasicSalary || 0,
     da: salary.dearnessAllowance || 0,
@@ -195,10 +196,10 @@ const PayslipTemplate = ({ data }) => {
           <span>Dearness Allowance</span>
           <span>{fmt(data.da)}</span>
         </div>
-        <div style={rowStyle}>
+        {data.ssfEnrolled && <div style={rowStyle}>
           <span>SSF Employer Contribution (20%)</span>
           <span>{fmt(data.ssfEmployer)}</span>
-        </div>
+        </div>}
 
         <div style={dividerStyle} />
 
@@ -211,10 +212,10 @@ const PayslipTemplate = ({ data }) => {
         <div style={dividerStyle} />
 
         {/* Deductions */}
-        <div style={rowStyle}>
+        {data.ssfEnrolled && <div style={rowStyle}>
           <span>Less: Contribution to SSF (31%)</span>
           <span style={{ color: '#ef4444' }}>({fmt(data.ssfDeduction)})</span>
-        </div>
+        </div>}
         <div style={rowStyle}>
           <span>Less: CIT Contribution</span>
           <span style={{ color: data.cit > 0 ? '#ef4444' : undefined }}>
@@ -223,7 +224,7 @@ const PayslipTemplate = ({ data }) => {
         </div>
         {data.tax > 0 && (
           <div style={rowStyle}>
-            <span>Tax</span>
+            <span>Tax{!data.ssfEnrolled && ' (1%)'}</span>
             <span style={{ color: '#ef4444' }}>({fmt(data.tax)})</span>
           </div>
         )}

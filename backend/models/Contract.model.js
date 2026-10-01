@@ -10,6 +10,16 @@ const contractSchema = new mongoose.Schema(
     status: { type: String, enum: ['draft', 'active', 'expired', 'terminated'], default: 'draft' },
     salary: { type: Number, min: 0, default: 0 },
     terms: { type: String, trim: true },
+    documents: [{
+      name: { type: String, required: true },
+      url: { type: String, required: true },
+      publicId: { type: String, required: true },
+      resourceType: { type: String },
+      mimeType: { type: String },
+      size: { type: Number },
+      uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      uploadedAt: { type: Date, default: Date.now },
+    }],
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true }

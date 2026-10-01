@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Plus, RefreshCw } from 'lucide-react';
+import { Mail, Search, Plus, RefreshCw } from 'lucide-react';
 import Badge from '../components/ui/Badge';
+import Modal from '../components/ui/Modal';
 import { useAuth } from '../hooks/useAuth';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
@@ -17,6 +18,11 @@ const Employees = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
+  const [emailStatus, setEmailStatus] = useState(null);
+  const [emailForm, setEmailForm] = useState({ subject: '', message: '' });
+  const [sendingEmail, setSendingEmail] = useState(false);
 
   const fetchEmployees = async () => {
     try {
@@ -32,6 +38,38 @@ const Employees = () => {
   };
 
   useEffect(() => { fetchEmployees(); }, []);
+
+  const openEmailModal = async () => {
+    if (selectedIds.length === 0) {
+      toast.error('Select at least one user first');
+      return;
+    }
+    try {
+      const response = await api.get('/email/status');
+      setEmailStatus(response.data.data);
+    } catch (err) {
+      setEmailStatus({ configured: false });
+    }
+    setEmailModalOpen(true);
+  };
+
+  const sendEmail = async (event) => {
+    event.preventDefault();
+    try {
+      setSendingEmail(true);
+      const response = await api.post('/email/send', { userIds: selectedIds, ...emailForm });
+      toast.success(`Email sent to ${response.data.data.recipientCount} user(s)`);
+      setEmailModalOpen(false);
+      setEmailForm({ subject: '', message: '' });
+      setSelectedIds([]);
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to send email');
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
+  const toggleSelected = (id) => setSelectedIds(previous => previous.includes(id) ? previous.filter(selectedId => selectedId !== id) : [...previous, id]);
 
   const filtered = employees.filter(emp => {
     const matchesSearch =
@@ -54,6 +92,9 @@ const Employees = () => {
         <div style={{ display: 'flex', gap: '8px' }}>
           <button className="btn btn-outline" onClick={fetchEmployees} disabled={loading}>
             <RefreshCw size={16} /> Refresh
+          </button>
+          <button className="btn btn-outline" onClick={openEmailModal} disabled={selectedIds.length === 0}>
+            <Mail size={16} /> Email Selected ({selectedIds.length})
           </button>
           {isAdmin && (
             <button className="btn btn-primary" onClick={() => navigate('/admin/employees/register')}>
@@ -96,6 +137,7 @@ const Employees = () => {
             <table className="table">
               <thead>
                 <tr>
+                  <th>Select</th>
                   <th>Employee ID</th>
                   <th>Name</th>
                   <th>Designation</th>
@@ -113,6 +155,7 @@ const Employees = () => {
                     style={{ cursor: 'pointer' }}
                     onClick={() => navigate(`/admin/employees/${emp._id}`)}
                   >
+                    <td onClick={(e) => e.stopPropagation()}><input type="checkbox" checked={selectedIds.includes(emp._id)} onChange={() => toggleSelected(emp._id)} aria-label={`Select ${emp.name}`} /></td>
                     <td style={{ fontFamily: 'monospace', fontSize: '13px' }}>{emp.employeeId || '—'}</td>
                     <td style={{ fontWeight: 500 }}>{emp.name}</td>
                     <td>{emp.designation || '—'}</td>
@@ -142,6 +185,16 @@ const Employees = () => {
           </div>
         )}
       </div>
+
+      <Modal isOpen={emailModalOpen} onClose={() => setEmailModalOpen(false)} title="Email Company Users">
+        <form className="flex flex-col gap-4" onSubmit={sendEmail}>
+          <p className="text-secondary text-sm">Recipients: {selectedIds.length} selected company user(s).</p>
+          {emailStatus && !emailStatus.configured && <p className="text-danger text-sm">Email service is not configured on the server.</p>}
+          <div className="form-group"><label className="form-label">Subject</label><input className="input" value={emailForm.subject} onChange={(e) => setEmailForm(previous => ({ ...previous, subject: e.target.value }))} required /></div>
+          <div className="form-group"><label className="form-label">Message</label><textarea className="input" rows="8" value={emailForm.message} onChange={(e) => setEmailForm(previous => ({ ...previous, message: e.target.value }))} required /></div>
+          <button type="submit" className="btn btn-primary w-full" disabled={sendingEmail || emailStatus?.configured === false}>{sendingEmail ? 'Sending...' : 'Send Email'}</button>
+        </form>
+      </Modal>
     </div>
   );
 };

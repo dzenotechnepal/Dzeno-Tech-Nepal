@@ -46,14 +46,16 @@ const Salary = () => {
 
   useEffect(() => { fetchData(); }, []);
 
+  const selectedEmployee = employees.find(employee => employee._id === formData.employeeId);
+  const ssfEnrolled = selectedEmployee?.ssfEnrolled !== false;
   const specificAmount = Number(formData.specificAmount) || 0;
   const basic = specificAmount * 0.6225;
   const da = specificAmount * 0.3775;
-  const ssfEmployer = basic * 0.2;
+  const ssfEmployer = ssfEnrolled ? basic * 0.2 : 0;
   const gross = basic + da + ssfEmployer;
-  const ssfDeduction = basic * 0.31;
-  const tax = Number(formData.taxAmount) || 0;
-  const netPay = gross - ssfEmployer - ssfDeduction - tax;
+  const ssfDeduction = ssfEnrolled ? basic * 0.31 : 0;
+  const tax = ssfEnrolled ? Number(formData.taxAmount) || 0 : specificAmount * 0.01;
+  const netPay = gross - ssfDeduction - tax;
   const formatMoney = (value) => Number(value || 0).toLocaleString('en-NP', { maximumFractionDigits: 2 });
 
   const updateForm = (event) => {
@@ -150,8 +152,8 @@ const Salary = () => {
           <div className="grid grid-cols-2 gap-4"><div className="form-group"><label className="form-label">Pay Period Start</label><input name="payPeriodStart" type="date" className="input" value={formData.payPeriodStart} onChange={updateForm} required /></div><div className="form-group"><label className="form-label">Pay Period End</label><input name="payPeriodEnd" type="date" className="input" value={formData.payPeriodEnd} onChange={updateForm} required /></div></div>
           <div className="form-group"><label className="form-label">Specific Amount (NPR)</label><input name="specificAmount" type="number" className="input" value={formData.specificAmount} onChange={updateForm} min="0" required /></div>
           <div className="grid grid-cols-2 gap-4"><div className="form-group"><label className="form-label">Basic Salary (62.25%)</label><input className="input" value={formatMoney(basic)} readOnly /></div><div className="form-group"><label className="form-label">DA (37.75%)</label><input className="input" value={formatMoney(da)} readOnly /></div></div>
-          <div className="form-group"><label className="form-label">Tax Amount (NPR)</label><input name="taxAmount" type="number" className="input" value={formData.taxAmount} onChange={updateForm} min="0" /></div>
-          <div className="card" style={{ background: 'var(--bg-tertiary)', padding: '1rem' }}><div className="flex justify-between mb-1"><span>SSF Employer (20%)</span><span>{formatMoney(ssfEmployer)}</span></div><div className="flex justify-between mb-1 font-bold"><span>Total Gross</span><span>{formatMoney(gross)}</span></div><div className="flex justify-between mb-1"><span>SSF Deduction (31%)</span><span>-{formatMoney(ssfDeduction)}</span></div><div className="flex justify-between mb-1"><span>Tax</span><span>-{formatMoney(tax)}</span></div><hr /><div className="flex justify-between font-bold"><span>Net Pay</span><span>{formatMoney(netPay)}</span></div></div>
+          <div className="form-group"><label className="form-label">Tax Amount (NPR){!ssfEnrolled && ' (1%)'}</label><input name="taxAmount" type="number" className="input" value={ssfEnrolled ? formData.taxAmount : tax.toFixed(2)} onChange={updateForm} min="0" disabled={!ssfEnrolled} /></div>
+          <div className="card" style={{ background: 'var(--bg-tertiary)', padding: '1rem' }}><div className="flex justify-between mb-1"><span>SSF Employer (20%)</span><span>{formatMoney(ssfEmployer)}</span></div><div className="flex justify-between mb-1 font-bold"><span>Total Gross</span><span>{formatMoney(gross)}</span></div><div className="flex justify-between mb-1"><span>SSF Deduction (31%)</span><span>-{formatMoney(ssfDeduction)}</span></div><div className="flex justify-between mb-1"><span>Tax{!ssfEnrolled && ' (1%)'}</span><span>-{formatMoney(tax)}</span></div><hr /><div className="flex justify-between font-bold"><span>Net Pay</span><span>{formatMoney(netPay)}</span></div></div>
           <button type="submit" className="btn btn-primary w-full" disabled={saving}>{saving ? 'Saving...' : 'Save Salary Record'}</button>
         </form>
       </Modal>

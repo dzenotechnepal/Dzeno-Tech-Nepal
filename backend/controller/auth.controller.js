@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models/User.model.js';
 import { generateToken } from '../utils/jwt.utils.js';
+import cloudinary from '../config/cloudinary.js';
 
 export const login = async (req, res) => {
   try {
@@ -65,6 +66,42 @@ export const updateMyProfile = async (req, res) => {
     return res.status(200).json({ success: true, data: user, message: 'Profile updated successfully' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const uploadMyAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'Please select an image' });
+    }
+
+    const user = await User.findById(req.user.id).select('avatarPublicId');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: 'dzeno-tech-nepal/avatars', resource_type: 'image' },
+        (error, uploadResult) => (error ? reject(error) : resolve(uploadResult))
+      );
+      uploadStream.end(req.file.buffer);
+    });
+
+    const previousPublicId = user.avatarPublicId;
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { avatar: result.secure_url, avatarPublicId: result.public_id },
+      { new: true }
+    ).select('-password');
+
+    if (previousPublicId && previousPublicId !== result.public_id) {
+      await cloudinary.uploader.destroy(previousPublicId, { resource_type: 'image' });
+    }
+
+    return res.status(200).json({ success: true, data: updatedUser, message: 'Profile picture updated' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message || 'Profile picture upload failed' });
   }
 };
 

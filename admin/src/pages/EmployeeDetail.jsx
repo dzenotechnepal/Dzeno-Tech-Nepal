@@ -238,7 +238,7 @@ const EmployeeDetail = () => {
                           <td>{s.monthName} {s.year}</td>
                           <td>Rs. {fmt(s.monthlyBasicSalary)}</td>
                           <td>Rs. {fmt(s.totalGrossPay)}</td>
-                          <td style={{ color: 'var(--danger)' }}>Rs. {fmt((s.ssfEmployeeDeduction || 0) + (s.citAmount || 0))}</td>
+                          <td style={{ color: 'var(--danger)' }}>Rs. {fmt((s.ssfEmployeeDeduction || 0) + (s.citAmount || 0) + (s.taxAmount || 0))}</td>
                           <td style={{ fontWeight: '700', color: 'var(--success)' }}>Rs. {fmt(s.netPay)}</td>
                           <td><Badge type={s.isPaid ? 'green' : 'yellow'}>{s.isPaid ? 'Paid' : 'Pending'}</Badge></td>
                         </tr>
