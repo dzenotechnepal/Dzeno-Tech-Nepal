@@ -21,5 +21,6 @@ const attendanceSchema = new mongoose.Schema(
 
 attendanceSchema.index({ date: 1, status: 1 });
 attendanceSchema.index({ employeeId: 1, year: -1, month: -1, date: -1 });
+attendanceSchema.index({ year: 1, month: 1, date: -1 });
 
 export const Attendance = mongoose.model('Attendance', attendanceSchema);

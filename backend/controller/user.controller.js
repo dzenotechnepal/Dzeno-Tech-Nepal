@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models/User.model.js';
+import { sendWelcomeEmail } from '../services/email.service.js';
 
 export const registerUser = async (req, res) => {
   try {
@@ -20,6 +21,10 @@ export const registerUser = async (req, res) => {
     });
 
     await user.save();
+
+    sendWelcomeEmail({ name: user.name, email, password }).catch((emailError) => {
+      console.error('Welcome email failed:', emailError.message);
+    });
     
     const userWithoutPassword = user.toObject();
     delete userWithoutPassword.password;

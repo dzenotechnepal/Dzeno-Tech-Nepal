@@ -16,7 +16,8 @@ const Attendance = () => {
     try {
       setLoading(true);
       const [year, month] = selectedMonth.split('-');
-      const endpoint = isAdmin ? '/attendance' : `/attendance/employee/${user?._id}`;
+      const userId = user?._id || user?.id;
+      const endpoint = isAdmin ? '/attendance' : `/attendance/employee/${userId}`;
       const res = await api.get(endpoint, { params: { month, year } });
       setAttendance(res.data.data || []);
     } catch (err) {
@@ -27,8 +28,8 @@ const Attendance = () => {
   };
 
   useEffect(() => {
-    if (user?._id) loadAttendance();
-  }, [selectedMonth, user?._id, isAdmin]);
+    if (user?._id || user?.id) loadAttendance();
+  }, [selectedMonth, user?._id, user?.id, isAdmin]);
 
   const handleAttendanceAction = async (action) => {
     try {

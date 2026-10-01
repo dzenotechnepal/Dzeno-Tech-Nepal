@@ -24,6 +24,7 @@ import Products from './pages/Products';
 import Holidays from './pages/Holidays';
 import Settings from './pages/Settings';
 import Contracts from './pages/Contracts';
+import Submissions from './pages/Submissions';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
               <Route path="/admin/products" element={<Products />} />
               <Route path="/admin/holidays" element={<Holidays />} />
               <Route path="/admin/settings" element={<Settings />} />
+              <Route path="/admin/submissions" element={<Submissions />} />
             </Route>
             
             <Route path="/admin/employees/:id" element={<EmployeeDetail />} />

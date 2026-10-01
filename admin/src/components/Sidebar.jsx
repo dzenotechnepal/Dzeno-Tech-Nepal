@@ -13,7 +13,8 @@ import {
   Package,
   CalendarDays,
   Settings,
-  FileSignature
+  FileSignature,
+  Inbox
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import Badge from './ui/Badge';
@@ -71,6 +72,10 @@ const Sidebar = ({ onNavigate }) => {
             <NavLink onClick={onNavigate} to="/admin/holidays" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
               <CalendarDays size={20} />
               <span>Holidays</span>
+            </NavLink>
+            <NavLink onClick={onNavigate} to="/admin/submissions" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
+              <Inbox size={20} />
+              <span>Submissions</span>
             </NavLink>
           </>
         ) : null}

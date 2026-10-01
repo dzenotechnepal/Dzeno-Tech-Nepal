@@ -74,7 +74,11 @@ export const getAttendanceList = async (req, res) => {
     if (month) query.month = parseInt(month, 10);
     if (year) query.year = parseInt(year, 10);
 
-    const attendances = await Attendance.find(query).populate('employeeId', 'name employeeId').sort({ date: -1 });
+    const attendances = await Attendance.find(query)
+      .select('employeeId date checkIn checkOut status workHours note month year')
+      .populate('employeeId', 'name employeeId')
+      .sort({ date: -1 })
+      .lean();
     return res.status(200).json({ success: true, data: attendances, message: 'Attendance fetched' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -119,7 +123,13 @@ export const markAttendance = async (req, res) => {
 
 export const getEmployeeAttendance = async (req, res) => {
   try {
-    const attendances = await Attendance.find({ employeeId: req.params.id }).sort({ date: -1 });
+    const query = { employeeId: req.params.id };
+    if (req.query.month) query.month = parseInt(req.query.month, 10);
+    if (req.query.year) query.year = parseInt(req.query.year, 10);
+    const attendances = await Attendance.find(query)
+      .select('employeeId date checkIn checkOut status workHours note month year')
+      .sort({ date: -1 })
+      .lean();
     return res.status(200).json({ success: true, data: attendances, message: 'Employee attendance fetched' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });

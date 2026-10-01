@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/contact")({
   validateSearch: (search: Record<string, unknown>) => ({
-    role: typeof search.role === "string" ? search.role : "",
+    role: typeof search["role"] === "string" ? search["role"] : "",
   }),
   head: () => ({
     meta: [
@@ -48,6 +48,10 @@ const details = [
 const fieldClass =
   "mt-2 h-12 rounded-xl border-border bg-card/40 text-foreground placeholder:text-muted-foreground/70 focus-visible:ring-ring";
 
+const apiUrl = import.meta.env["VITE_API_URL"] || (window.location.hostname === "localhost"
+  ? "http://localhost:5000/api"
+  : "https://api.dzenotechnepal.com.np/api");
+
 function Contact() {
   const { role } = Route.useSearch();
   const [submitting, setSubmitting] = useState(false);
@@ -83,27 +87,35 @@ function Contact() {
 
     const form = e.currentTarget;
     const formData = new FormData(form);
-
-    formData.append("access_key", "b516953a-fc16-4471-9714-bc4c7ae006af");
-    formData.append(
-      "subject",
-      isApplication
-        ? `Job Application — ${role} — Dzeno Tech Nepal`
-        : "New Contact Inquiry — Dzeno Tech Nepal"
-    );
+    const payload = isApplication
+      ? {
+          name: formData.get("name"),
+          portfolio: formData.get("company"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          applicationType: formData.get("service"),
+          position: formData.get("position"),
+          message: formData.get("message"),
+        }
+      : {
+          name: formData.get("name"),
+          company: formData.get("company"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          service: formData.get("service"),
+          budget: formData.get("budget"),
+          message: formData.get("message"),
+        };
 
     try {
-      const response = await fetch(
-        "https://api.web3forms.com/submit",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
+      const response = await fetch(`${apiUrl}/submissions/${isApplication ? "applications" : "contact"}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
       const result = await response.json();
 
-      if (result.success) {
+      if (response.ok && result.success) {
         form.reset();
 
         toast.success("Inquiry received", {
