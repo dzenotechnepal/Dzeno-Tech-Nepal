@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
@@ -40,14 +41,29 @@ const benefits = [
   "Paid leave and festival holidays",
 ];
 
-const openings = [
+const defaultOpenings = [
   { role: "Full-Stack Developer", type: "Full-time · Kathmandu / Hybrid", level: "Mid–Senior" },
   { role: "IT Support Engineer", type: "Full-time · On-site", level: "Junior–Mid" },
   { role: "IT Trainer (Web Development)", type: "Part-time / Contract", level: "Experienced" },
   { role: "Software Development Intern", type: "Internship · 3–6 months", level: "Entry" },
 ];
 
+const apiUrl = import.meta.env["VITE_API_URL"] || (window.location.hostname === "localhost"
+  ? "http://localhost:5000/api"
+  : "https://api.dzenotechnepal.com.np/api");
+
 function Careers() {
+  const [openings, setOpenings] = useState(defaultOpenings);
+
+  useEffect(() => {
+    fetch(`${apiUrl}/openings/public`)
+      .then(response => response.ok ? response.json() : null)
+      .then(result => {
+        if (result?.success && result.data?.length) setOpenings(result.data);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <>
       <PageHero
@@ -112,7 +128,7 @@ function Careers() {
         <SectionHeading
           eyebrow="Open Positions"
           title="Current Opportunities."
-          description="Roles below are editable placeholders — update them as your hiring plan changes."
+          description="Explore the roles currently open at Dzeno Tech Nepal."
         />
         <ul className="mt-12 divide-y divide-border border-y border-border">
           {openings.map((o, i) => (

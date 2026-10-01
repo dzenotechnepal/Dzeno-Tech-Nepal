@@ -15,6 +15,7 @@ import {
   Settings,
   FileSignature,
   Inbox
+  ,BriefcaseBusiness
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import Badge from './ui/Badge';
@@ -76,6 +77,10 @@ const Sidebar = ({ onNavigate }) => {
             <NavLink onClick={onNavigate} to="/admin/submissions" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
               <Inbox size={20} />
               <span>Submissions</span>
+            </NavLink>
+            <NavLink onClick={onNavigate} to="/admin/openings" className={({isActive}) => `sidebar-link ${isActive ? 'active' : ''}`}>
+              <BriefcaseBusiness size={20} />
+              <span>Open Positions</span>
             </NavLink>
           </>
         ) : null}

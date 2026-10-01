@@ -17,6 +17,8 @@ router.post('/applications', createJobApplication);
 router.use(authenticate, authorize('admin', 'superadmin'));
 router.get('/contact', getContactInquiries);
 router.patch('/contact/:id', updateContactInquiry);
+router.get('/inquiries', getContactInquiries);
+router.patch('/inquiries/:id', updateContactInquiry);
 router.get('/applications', getJobApplications);
 router.patch('/applications/:id', updateJobApplication);
 

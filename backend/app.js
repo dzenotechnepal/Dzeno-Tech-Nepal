@@ -22,6 +22,7 @@ import contractRouter from './routes/contract.routes.js';
 import settingRouter from './routes/setting.routes.js';
 import emailRouter from './routes/email.routes.js';
 import submissionRouter from './routes/submission.routes.js';
+import openingRouter from './routes/opening.routes.js';
 
 dotenv.config();
 
@@ -29,21 +30,28 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(helmet());
+const normalizeOrigin = (value) => {
+  const trimmed = value.trim();
+  if (!trimmed) return '';
+  return (trimmed.startsWith('http://') || trimmed.startsWith('https://') ? trimmed : `https://${trimmed}`).replace(/\/$/, '');
+};
+
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'https://admin.dzenotechnepal.com.np',
   'http://admin.dzenotechnepal.com.np',
-  'https://dzenotechnepal.com.np'
-];
+  'https://dzenotechnepal.com.np',
+  'http://dzenotechnepal.com.np',
+].map(normalizeOrigin);
 
-if (process.env.FRONTEND_URL) allowedOrigins.push(...process.env.FRONTEND_URL.split(','));
-if (process.env.ADMIN_URL) allowedOrigins.push(...process.env.ADMIN_URL.split(','));
+if (process.env.FRONTEND_URL) allowedOrigins.push(...process.env.FRONTEND_URL.split(',').map(normalizeOrigin));
+if (process.env.ADMIN_URL) allowedOrigins.push(...process.env.ADMIN_URL.split(',').map(normalizeOrigin));
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps, curl) or if origin is in our allowed list
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(normalizeOrigin(origin))) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -86,6 +94,7 @@ app.use('/api/contracts', contractRouter);
 app.use('/api/settings', settingRouter);
 app.use('/api/email', emailRouter);
 app.use('/api/submissions', submissionRouter);
+app.use('/api/openings', openingRouter);
 
 connectToMongoDB()
   .then(() => {

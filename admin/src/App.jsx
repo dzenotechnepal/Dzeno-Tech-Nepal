@@ -25,6 +25,7 @@ import Holidays from './pages/Holidays';
 import Settings from './pages/Settings';
 import Contracts from './pages/Contracts';
 import Submissions from './pages/Submissions';
+import Openings from './pages/Openings';
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
               <Route path="/admin/holidays" element={<Holidays />} />
               <Route path="/admin/settings" element={<Settings />} />
               <Route path="/admin/submissions" element={<Submissions />} />
+              <Route path="/admin/openings" element={<Openings />} />
             </Route>
             
             <Route path="/admin/employees/:id" element={<EmployeeDetail />} />
