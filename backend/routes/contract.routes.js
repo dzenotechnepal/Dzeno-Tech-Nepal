@@ -23,5 +23,3 @@ router.post('/:id/documents', documentUpload.single('document'), uploadContractD
 router.delete('/:id/documents/:documentId', deleteContractDocument);
 
 export default router;
-
-export default router;

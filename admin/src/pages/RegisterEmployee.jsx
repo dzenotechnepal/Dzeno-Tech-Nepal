@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, BarChart3 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../api/axios';
 
@@ -165,7 +165,7 @@ const RegisterEmployee = () => {
           {basic > 0 && (
             <div style={{ background: 'var(--bg-tertiary)', borderRadius: '8px', padding: '16px', fontSize: '14px' }}>
               <div style={{ fontWeight: '600', marginBottom: '10px', color: 'var(--accent-blue)' }}>
-                📊 Salary Breakdown Preview
+                <BarChart3 size={16} aria-hidden="true" /> Salary Breakdown Preview
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 16px' }}>
                 {[

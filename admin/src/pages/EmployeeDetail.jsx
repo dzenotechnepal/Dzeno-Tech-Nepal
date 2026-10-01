@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Edit2, Building2, CreditCard, Clock, DollarSign, FileText, Calendar } from 'lucide-react';
+import { ArrowLeft, Edit2, Building2, CreditCard, Clock, DollarSign, FileText, Calendar, UserRound, Landmark, ClipboardList, WalletCards, ReceiptText, Palmtree } from 'lucide-react';
 import Badge from '../components/ui/Badge';
 import { useAuth } from '../hooks/useAuth';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 
 const TABS = [
-  { id: 'info', label: 'Info', icon: '👤' },
-  { id: 'bank', label: 'Bank Details', icon: '🏦' },
-  { id: 'attendance', label: 'Attendance', icon: '📋' },
-  { id: 'salary', label: 'Salary', icon: '💰' },
-  { id: 'payslips', label: 'Payslips', icon: '🧾' },
-  { id: 'leaves', label: 'Leaves', icon: '🌴' },
+  { id: 'info', label: 'Info', icon: UserRound },
+  { id: 'bank', label: 'Bank Details', icon: Landmark },
+  { id: 'attendance', label: 'Attendance', icon: ClipboardList },
+  { id: 'salary', label: 'Salary', icon: WalletCards },
+  { id: 'payslips', label: 'Payslips', icon: ReceiptText },
+  { id: 'leaves', label: 'Leaves', icon: Palmtree },
 ];
 
 const EmployeeDetail = () => {
@@ -119,7 +119,7 @@ const EmployeeDetail = () => {
               marginBottom: '-1px',
             }}
           >
-            {tab.icon} {tab.label}
+            <tab.icon size={16} aria-hidden="true" /> {tab.label}
           </button>
         ))}
       </div>
@@ -132,7 +132,7 @@ const EmployeeDetail = () => {
           {activeTab === 'info' && (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div className="card">
-                <h3 style={{ marginBottom: '16px' }}>👤 Personal Information</h3>
+                <h3 style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}><UserRound size={18} aria-hidden="true" /> Personal Information</h3>
                 {[
                   ['Full Name', employee.name],
                   ['Email', employee.email],
@@ -151,7 +151,7 @@ const EmployeeDetail = () => {
                 ))}
               </div>
               <div className="card">
-                <h3 style={{ marginBottom: '16px' }}>🏢 Work Information</h3>
+                <h3 style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}><Building2 size={18} aria-hidden="true" /> Work Information</h3>
                 {[
                   ['Designation', employee.designation || '—'],
                   ['Department', employee.department || '—'],
@@ -171,7 +171,7 @@ const EmployeeDetail = () => {
           {/* BANK TAB */}
           {activeTab === 'bank' && (
             <div className="card">
-              <h3 style={{ marginBottom: '16px' }}>🏦 Bank Information</h3>
+              <h3 style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}><Landmark size={18} aria-hidden="true" /> Bank Information</h3>
               {employee.bankAccountNumber ? (
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   {[
@@ -198,7 +198,7 @@ const EmployeeDetail = () => {
           {/* ATTENDANCE TAB */}
           {activeTab === 'attendance' && (
             <div className="card">
-              <h3 style={{ marginBottom: '16px' }}>📋 Attendance History</h3>
+              <h3 style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}><ClipboardList size={18} aria-hidden="true" /> Attendance History</h3>
               {attendance.length === 0 ? (
                 <p style={{ color: 'var(--text-secondary)' }}>No attendance records found.</p>
               ) : (
@@ -225,7 +225,7 @@ const EmployeeDetail = () => {
           {/* SALARY TAB */}
           {activeTab === 'salary' && (
             <div className="card">
-              <h3 style={{ marginBottom: '16px' }}>💰 Salary History</h3>
+              <h3 style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}><WalletCards size={18} aria-hidden="true" /> Salary History</h3>
               {salary.length === 0 ? (
                 <p style={{ color: 'var(--text-secondary)' }}>No salary records found.</p>
               ) : (
@@ -253,7 +253,7 @@ const EmployeeDetail = () => {
           {/* PAYSLIPS TAB */}
           {activeTab === 'payslips' && (
             <div className="card">
-              <h3 style={{ marginBottom: '16px' }}>🧾 Payslips</h3>
+              <h3 style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}><ReceiptText size={18} aria-hidden="true" /> Payslips</h3>
               {payslips.length === 0 ? (
                 <p style={{ color: 'var(--text-secondary)' }}>No payslips generated yet.</p>
               ) : (
@@ -286,7 +286,7 @@ const EmployeeDetail = () => {
           {/* LEAVES TAB */}
           {activeTab === 'leaves' && (
             <div className="card">
-              <h3 style={{ marginBottom: '16px' }}>🌴 Leave History</h3>
+              <h3 style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}><Palmtree size={18} aria-hidden="true" /> Leave History</h3>
               {leaves.length === 0 ? (
                 <p style={{ color: 'var(--text-secondary)' }}>No leave records found.</p>
               ) : (

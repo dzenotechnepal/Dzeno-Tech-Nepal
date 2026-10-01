@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, UserCheck, CalendarOff, Banknote, RefreshCw, ChevronRight } from 'lucide-react';
+import { Users, UserCheck, CalendarOff, Banknote, RefreshCw, ChevronRight, ClipboardList, WalletCards, ReceiptText, Palmtree } from 'lucide-react';
 import StatCard from '../components/ui/StatCard';
 import Badge from '../components/ui/Badge';
 import { useAuth } from '../hooks/useAuth';
@@ -114,19 +114,19 @@ const Dashboard = () => {
               <h3 style={{ marginBottom: '16px' }}>Quick Actions</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <button className="btn btn-outline" style={{ justifyContent: 'flex-start' }} onClick={() => navigate('/admin/attendance')}>
-                  📋 View Attendance
+                  <ClipboardList size={16} aria-hidden="true" /> View Attendance
                 </button>
                 <button className="btn btn-outline" style={{ justifyContent: 'flex-start' }} onClick={() => navigate('/admin/salary')}>
-                  💰 Manage Salary
+                  <WalletCards size={16} aria-hidden="true" /> Manage Salary
                 </button>
                 <button className="btn btn-outline" style={{ justifyContent: 'flex-start' }} onClick={() => navigate('/admin/payslips')}>
-                  🧾 Generate Payslip
+                  <ReceiptText size={16} aria-hidden="true" /> Generate Payslip
                 </button>
                 <button className="btn btn-outline" style={{ justifyContent: 'flex-start' }} onClick={() => navigate('/admin/leaves')}>
-                  🌴 Manage Leaves
+                  <Palmtree size={16} aria-hidden="true" /> Manage Leaves
                 </button>
                 <button className="btn btn-outline" style={{ justifyContent: 'flex-start' }} onClick={() => navigate('/admin/employees')}>
-                  👥 All Employees
+                  <Users size={16} aria-hidden="true" /> All Employees
                 </button>
               </div>
 
