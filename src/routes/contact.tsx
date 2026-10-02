@@ -9,9 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/contact")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    role: typeof search["role"] === "string" ? search["role"] : "",
-  }),
   head: () => ({
     meta: [
       { title: "Contact Dzeno Tech Nepal — Let's Talk About Your Next Project" },
@@ -53,28 +50,16 @@ const apiUrl = import.meta.env["VITE_API_URL"] || (window.location.hostname === 
   : "https://api.dzenotechnepal.com.np/api");
 
 function Contact() {
-  const { role } = Route.useSearch();
   const [submitting, setSubmitting] = useState(false);
-  const isApplication = Boolean(role);
 
   return (
     <>
       <PageHero
         eyebrow="Contact"
         title={
-          <>
-            {isApplication ? (
-              <>Apply for <span className="text-gradient">{role}.</span></>
-            ) : (
-              <>Let's Talk About Your <span className="text-gradient">Next Project.</span></>
-            )}
-          </>
+          <>Let's Talk About Your <span className="text-gradient">Next Project.</span></>
         }
-        subtitle={
-          isApplication
-            ? "Tell us about yourself and your experience. We will review your application and get back to you."
-            : "Share a few details and we'll come back with a practical recommendation, timeline, and next steps."
-        }
+        subtitle="Share a few details and we'll come back with a practical recommendation, timeline, and next steps."
       />
 
       <section className="container-x grid gap-12 pb-24 lg:grid-cols-[1.3fr_0.7fr] lg:gap-16 md:pb-32">
@@ -87,28 +72,18 @@ function Contact() {
 
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const payload = isApplication
-      ? {
-          name: formData.get("name"),
-          portfolio: formData.get("company"),
-          email: formData.get("email"),
-          phone: formData.get("phone"),
-          applicationType: formData.get("service"),
-          position: formData.get("position"),
-          message: formData.get("message"),
-        }
-      : {
-          name: formData.get("name"),
-          company: formData.get("company"),
-          email: formData.get("email"),
-          phone: formData.get("phone"),
-          service: formData.get("service"),
-          budget: formData.get("budget"),
-          message: formData.get("message"),
-        };
+    const payload = {
+      name: formData.get("name"),
+      company: formData.get("company"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      service: formData.get("service"),
+      budget: formData.get("budget"),
+      message: formData.get("message"),
+    };
 
     try {
-      const response = await fetch(`${apiUrl}/submissions/${isApplication ? "applications" : "contact"}`, {
+      const response = await fetch(`${apiUrl}/submissions/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -146,11 +121,11 @@ function Contact() {
                 <Input id="name" name="name" required placeholder="Your name" className={fieldClass} />
               </div>
               <div>
-                <Label htmlFor="company">{isApplication ? "Portfolio / LinkedIn" : "Company"}</Label>
+                <Label htmlFor="company">Company</Label>
                 <Input
                   id="company"
                   name="company"
-                  placeholder={isApplication ? "Link to your work or profile" : "Company name"}
+                  placeholder="Company name"
                   className={fieldClass}
                 />
               </div>
@@ -176,7 +151,7 @@ function Contact() {
                 />
               </div>
               <div>
-                <Label htmlFor="service">{isApplication ? "Application Type" : "Service Required"}</Label>
+                <Label htmlFor="service">Service Required</Label>
                 <select
                   id="service"
                   name="service"
@@ -185,9 +160,9 @@ function Contact() {
                   className="mt-2 h-12 w-full rounded-xl border border-border bg-card/40 px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <option value="" disabled>
-                    {isApplication ? "Select an application type" : "Select a service"}
+                    Select a service
                   </option>
-                  {(isApplication ? ["Full-time", "Part-time / Contract", "Internship", "General Application"] : services).map((s) => (
+                  {services.map((s) => (
                     <option key={s} value={s}>
                       {s}
                     </option>
@@ -214,8 +189,6 @@ function Contact() {
               </div>
             </div>
 
-            {isApplication && <input type="hidden" name="position" value={role} />}
-
             <div className="mt-6">
               <Label htmlFor="message">Message</Label>
               <Textarea
@@ -223,11 +196,7 @@ function Contact() {
                 name="message"
                 required
                 rows={5}
-                placeholder={
-                  isApplication
-                    ? "Tell us about your experience, skills, and what you would like to work on."
-                    : "What are you trying to achieve?"
-                }
+                placeholder="What are you trying to achieve?"
                 className="mt-2 rounded-xl border-border bg-card/40 text-foreground placeholder:text-muted-foreground/70"
               />
             </div>
@@ -237,7 +206,7 @@ function Contact() {
               disabled={submitting}
               className="group mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-accent px-6 py-3.5 text-sm font-medium text-primary-foreground transition-transform duration-300 hover:scale-[1.03] disabled:opacity-60"
             >
-              {submitting ? "Sending..." : isApplication ? "Submit Application" : "Send Inquiry"}
+              {submitting ? "Sending..." : "Send Inquiry"}
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
           </form>

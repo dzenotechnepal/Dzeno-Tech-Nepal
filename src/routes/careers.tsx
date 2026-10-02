@@ -134,8 +134,8 @@ function Careers() {
           {openings.map((o, i) => (
             <Reveal as="li" key={o.role} delay={i * 90}>
               <Link
-                to="/contact"
-                search={{ role: o.role }}
+                to="/careers/apply"
+                search={{ position: o.role }}
                 className="group flex flex-col gap-3 py-7 transition-colors hover:bg-accent/40 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
@@ -165,8 +165,8 @@ function Careers() {
               Internships included. Tell us what you want to work on and what you've built.
             </p>
             <Link
-              to="/contact"
-              search={{ role: "General Application" }}
+              to="/careers/apply"
+              search={{ position: "General Application" }}
               className="group relative mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-accent px-6 py-3.5 text-sm font-medium text-primary-foreground transition-transform duration-300 hover:scale-[1.03]"
             >
               Apply Now
