@@ -4,7 +4,7 @@ import api from '../api/axios';
 import toast from 'react-hot-toast';
 
 const defaults = {
-  companyName: '', companyEmail: '', companyPhone: '', companyAddress: '', currency: 'NPR',
+  companyName: '', companyEmail: '', companyPhone: '', companyAddress: 'Kathmandu, Lolang', currency: 'NPR',
   timezone: 'Asia/Kathmandu', defaultLeaveDays: 0, attendanceCutoff: '18:00', payslipFooter: '',
 };
 

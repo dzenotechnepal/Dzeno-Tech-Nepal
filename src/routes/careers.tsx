@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import logo from '/logo.png';
+import logo from "/logo.png";
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
@@ -26,10 +26,26 @@ export const Route = createFileRoute("/careers")({
 });
 
 const why = [
-  { n: "01", title: "Real ownership", copy: "You ship work that clients depend on, not tickets in a queue." },
-  { n: "02", title: "Senior mentorship", copy: "Code review and architecture guidance from people who build daily." },
-  { n: "03", title: "Modern stack", copy: "Current tooling across web, cloud, data, and automation." },
-  { n: "04", title: "Room to grow", copy: "Clear progression across engineering, consulting, and training tracks." },
+  {
+    n: "01",
+    title: "Real ownership",
+    copy: "You ship work that clients depend on, not tickets in a queue.",
+  },
+  {
+    n: "02",
+    title: "Senior mentorship",
+    copy: "Code review and architecture guidance from people who build daily.",
+  },
+  {
+    n: "03",
+    title: "Modern stack",
+    copy: "Current tooling across web, cloud, data, and automation.",
+  },
+  {
+    n: "04",
+    title: "Room to grow",
+    copy: "Clear progression across engineering, consulting, and training tracks.",
+  },
 ];
 
 const benefits = [
@@ -48,17 +64,19 @@ const defaultOpenings = [
   { role: "Software Development Intern", type: "Internship · 3–6 months", level: "Entry" },
 ];
 
-const apiUrl = import.meta.env["VITE_API_URL"] || (window.location.hostname === "localhost"
-  ? "http://localhost:5000/api"
-  : "https://api.dzenotechnepal.com.np/api");
+const apiUrl =
+  import.meta.env["VITE_API_URL"] ||
+  (window.location.hostname === "localhost"
+    ? "http://localhost:5000/api"
+    : "https://api.dzenotechnepal.com.np/api");
 
 function Careers() {
   const [openings, setOpenings] = useState(defaultOpenings);
 
   useEffect(() => {
     fetch(`${apiUrl}/openings/public`)
-      .then(response => response.ok ? response.json() : null)
-      .then(result => {
+      .then((response) => (response.ok ? response.json() : null))
+      .then((result) => {
         if (result?.success && result.data?.length) setOpenings(result.data);
       })
       .catch(() => {});
@@ -70,8 +88,12 @@ function Careers() {
         eyebrow="Careers"
         title={
           <>
-            Build Future With  <span className="text-gradient">
-              <span> <img src={logo} alt="dzeno logo" className="h-18 w-46" /></span>
+            Build Future With{" "}
+            <span className="text-gradient">
+              <span>
+                {" "}
+                <img src={logo} alt="dzeno logo" className="h-18 w-46" />
+              </span>
             </span>
           </>
         }
@@ -118,7 +140,9 @@ function Careers() {
         <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {benefits.map((b, i) => (
             <Reveal as="li" key={b} delay={i * 70}>
-              <div className="h-full rounded-2xl border border-border bg-card/40 p-6 text-sm">{b}</div>
+              <div className="h-full rounded-2xl border border-border bg-card/40 p-6 text-sm">
+                {b}
+              </div>
             </Reveal>
           ))}
         </ul>

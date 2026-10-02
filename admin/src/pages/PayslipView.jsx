@@ -8,6 +8,7 @@ const PayslipView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [payslip, setPayslip] = useState(null);
+  const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const printRef = useRef();
 
@@ -18,8 +19,12 @@ const PayslipView = () => {
   const fetchPayslip = async () => {
     try {
       setLoading(true);
-      const res = await api.get(`/payslips/${id}`);
-      setPayslip(res.data.data);
+      const [payslipResponse, settingsResponse] = await Promise.all([
+        api.get(`/payslips/${id}`),
+        api.get('/settings'),
+      ]);
+      setPayslip(payslipResponse.data.data);
+      setSettings(settingsResponse.data.data);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to load payslip');
     } finally {
@@ -78,6 +83,9 @@ const PayslipView = () => {
     tax: salary.taxAmount || 0,
     netPay: salary.netPay || 0,
     attendanceSummary: payslip.attendanceSummary || {},
+    companyName: settings?.companyName || 'Dzeno Tech Nepal',
+    companyAddress: settings?.companyAddress || 'Kathmandu, Lolang',
+    payslipFooter: settings?.payslipFooter || 'This is a computer-generated payslip.',
     generatedBy: payslip.generatedBy?.name || 'Admin',
     generatedAt: payslip.generatedAt
       ? new Date(payslip.generatedAt).toLocaleDateString('en-NP')
@@ -140,9 +148,9 @@ const PayslipTemplate = ({ data }) => {
       <div className="payslip-header">
         <img src="/logo.png" alt="Dzeno Tech Nepal" style={{ width: '220px', maxWidth: '100%', marginBottom: '10px' }} />
         <h2 style={{ margin: 0, fontSize: '22px', fontWeight: '700', letterSpacing: '0.5px' }}>
-          Dzeno Tech Nepal
+          {data.companyName}
         </h2>
-        <div style={{ fontSize: '14px', marginTop: '4px', opacity: 0.85 }}>Lalitpur, Nepal</div>
+        <div style={{ fontSize: '14px', marginTop: '4px', opacity: 0.85 }}>{data.companyAddress}</div>
         <div className="payslip-divider" />
         <div style={{ fontSize: '15px', fontWeight: '600', letterSpacing: '1px', marginTop: '4px' }}>
           Payslip – {data.monthYear}
@@ -257,7 +265,7 @@ const PayslipTemplate = ({ data }) => {
       </div>
 
       <div style={{ borderTop: '1px solid currentColor', marginTop: '16px', paddingTop: '10px', fontSize: '11px', opacity: 0.6, textAlign: 'center' }}>
-        This is a computer-generated payslip. No physical signature is required.
+        {data.payslipFooter} No physical signature is required.
         Payslip No: {data.payslipNumber}
       </div>
     </div>

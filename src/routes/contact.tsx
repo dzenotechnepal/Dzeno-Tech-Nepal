@@ -45,9 +45,11 @@ const details = [
 const fieldClass =
   "mt-2 h-12 rounded-xl border-border bg-card/40 text-foreground placeholder:text-muted-foreground/70 focus-visible:ring-ring";
 
-const apiUrl = import.meta.env["VITE_API_URL"] || (window.location.hostname === "localhost"
-  ? "http://localhost:5000/api"
-  : "https://api.dzenotechnepal.com.np/api");
+const apiUrl =
+  import.meta.env["VITE_API_URL"] ||
+  (window.location.hostname === "localhost"
+    ? "http://localhost:5000/api"
+    : "https://api.dzenotechnepal.com.np/api");
 
 function Contact() {
   const [submitting, setSubmitting] = useState(false);
@@ -57,7 +59,9 @@ function Contact() {
       <PageHero
         eyebrow="Contact"
         title={
-          <>Let's Talk About Your <span className="text-gradient">Next Project.</span></>
+          <>
+            Let's Talk About Your <span className="text-gradient">Next Project.</span>
+          </>
         }
         subtitle="Share a few details and we'll come back with a practical recommendation, timeline, and next steps."
       />
@@ -66,59 +70,62 @@ function Contact() {
         <Reveal>
           <form
             className="rounded-3xl border border-border bg-card/40 p-7 md:p-10"
-             onSubmit={async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
+            onSubmit={async (e) => {
+              e.preventDefault();
+              setSubmitting(true);
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const payload = {
-      name: formData.get("name"),
-      company: formData.get("company"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      service: formData.get("service"),
-      budget: formData.get("budget"),
-      message: formData.get("message"),
-    };
+              const form = e.currentTarget;
+              const formData = new FormData(form);
+              const payload = {
+                name: formData.get("name"),
+                company: formData.get("company"),
+                email: formData.get("email"),
+                phone: formData.get("phone"),
+                service: formData.get("service"),
+                budget: formData.get("budget"),
+                message: formData.get("message"),
+              };
 
-    try {
-      const response = await fetch(`${apiUrl}/submissions/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json();
+              try {
+                const response = await fetch(`${apiUrl}/submissions/contact`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(payload),
+                });
+                const result = await response.json();
 
-      if (response.ok && result.success) {
-        form.reset();
+                if (response.ok && result.success) {
+                  form.reset();
 
-        toast.success("Inquiry received", {
-          description:
-            "Thanks — we'll get back to you shortly.",
-        });
-      } else {
-        toast.error("Something went wrong", {
-          description:
-            result.message || "Please try again later.",
-        });
-      }
-    } catch (error) {
-      console.error(error);
+                  toast.success("Inquiry received", {
+                    description: "Thanks — we'll get back to you shortly.",
+                  });
+                } else {
+                  toast.error("Something went wrong", {
+                    description: result.message || "Please try again later.",
+                  });
+                }
+              } catch (error) {
+                console.error(error);
 
-      toast.error("Unable to send inquiry", {
-        description:
-          "Please check your internet connection and try again.",
-      });
-    } finally {
-      setSubmitting(false);
-    }
-  }}
+                toast.error("Unable to send inquiry", {
+                  description: "Please check your internet connection and try again.",
+                });
+              } finally {
+                setSubmitting(false);
+              }
+            }}
           >
             <div className="grid gap-6 sm:grid-cols-2">
               <div>
                 <Label htmlFor="name">Full Name</Label>
-                <Input id="name" name="name" required placeholder="Your name" className={fieldClass} />
+                <Input
+                  id="name"
+                  name="name"
+                  required
+                  placeholder="Your name"
+                  className={fieldClass}
+                />
               </div>
               <div>
                 <Label htmlFor="company">Company</Label>

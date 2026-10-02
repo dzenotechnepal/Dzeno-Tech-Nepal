@@ -544,6 +544,10 @@ h3 { font-size: 1.25rem; font-weight: 500; }
   text-transform: uppercase;
 }
 
+.attendance-calendar-header .weekend {
+  color: #dc2626;
+}
+
 .attendance-day {
   min-height: 96px;
   display: flex;
@@ -559,6 +563,16 @@ h3 { font-size: 1.25rem; font-weight: 500; }
   min-height: 0;
   border-color: transparent;
   background: transparent;
+}
+
+.attendance-day.is-weekend {
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.attendance-day.is-weekend strong,
+.attendance-day.is-weekend small {
+  color: #b91c1c;
 }
 
 .attendance-day small {
@@ -865,6 +879,10 @@ h3 { font-size: 1.25rem; font-weight: 500; }
 @media print {
   .no-print { display: none !important; }
   .print-only { display: block !important; }
+  .print-only,
+  .print-only * {
+    visibility: visible !important;
+  }
 
   body {
     background: #fff !important;

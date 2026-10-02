@@ -6,7 +6,7 @@ const defaults = {
   companyName: 'Dzeno Tech Nepal',
   companyEmail: '',
   companyPhone: '',
-  companyAddress: '',
+  companyAddress: 'Kathmandu, Lolang',
   currency: 'NPR',
   timezone: 'Asia/Kathmandu',
   defaultLeaveDays: 0,
