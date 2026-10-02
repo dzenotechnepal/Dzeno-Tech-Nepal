@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download } from 'lucide-react';
 import api from '../api/axios';
@@ -10,13 +10,8 @@ const PayslipView = () => {
   const [payslip, setPayslip] = useState(null);
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
-  const printRef = useRef();
 
-  useEffect(() => {
-    fetchPayslip();
-  }, [id]);
-
-  const fetchPayslip = async () => {
+  const fetchPayslip = useCallback(async () => {
     try {
       setLoading(true);
       const [payslipResponse, settingsResponse] = await Promise.all([
@@ -30,7 +25,15 @@ const PayslipView = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void fetchPayslip();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [fetchPayslip]);
 
   const handlePrint = () => {
     window.print();
@@ -137,16 +140,15 @@ const fmt = (num) =>
   Number(num).toLocaleString('en-NP', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
 const PayslipTemplate = ({ data }) => {
-  const rowStyle = { display: 'flex', justifyContent: 'space-between', padding: '7px 0' };
+  const rowStyle = { display: 'flex', justifyContent: 'space-between', padding: '5px 0' };
   const boldRowStyle = { ...rowStyle, fontWeight: '700' };
-  const dividerStyle = { borderTop: '1px solid #334155', margin: '8px 0' };
-  const printDivider = { borderTop: '1px solid #000', margin: '8px 0' };
+  const dividerStyle = { borderTop: '1px solid #334155', margin: '5px 0' };
 
   return (
     <div className="payslip-box">
       {/* Header */}
       <div className="payslip-header">
-        <img src="/logo.png" alt="Dzeno Tech Nepal" style={{ width: '220px', maxWidth: '100%', marginBottom: '10px' }} />
+        <img className="payslip-logo" src="/logo.png" alt="Dzeno Tech Nepal" style={{ width: '220px', maxWidth: '100%', marginBottom: '10px' }} />
         <h2 style={{ margin: 0, fontSize: '22px', fontWeight: '700', letterSpacing: '0.5px' }}>
           {data.companyName}
         </h2>
@@ -246,22 +248,6 @@ const PayslipTemplate = ({ data }) => {
         </div>
 
         <div style={dividerStyle} />
-      </div>
-
-      {/* Signature block */}
-      <div className="payslip-signatures">
-        <div>
-          <div style={{ marginBottom: '32px' }}>Authorized Signature:</div>
-          <div style={{ borderTop: '1px solid currentColor', width: '180px', paddingTop: '4px', fontSize: '12px' }}>
-            Signature
-          </div>
-        </div>
-        <div>
-          <div style={{ marginBottom: '32px' }}>Company Seal:</div>
-          <div style={{ border: '1px solid currentColor', width: '100px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', opacity: 0.5 }}>
-            [SEAL]
-          </div>
-        </div>
       </div>
 
       <div style={{ borderTop: '1px solid currentColor', marginTop: '16px', paddingTop: '10px', fontSize: '11px', opacity: 0.6, textAlign: 'center' }}>

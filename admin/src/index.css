@@ -877,6 +877,17 @@ h3 { font-size: 1.25rem; font-weight: 500; }
 
 /* ── Print-only: shown only when printing ─────────────── */
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
   .no-print { display: none !important; }
   .print-only { display: block !important; }
   .print-only,
@@ -893,9 +904,37 @@ h3 { font-size: 1.25rem; font-weight: 500; }
     border-color: #000 !important;
     color: #000 !important;
     width: 100%;
-    max-width: 720px;
+    max-width: none;
     margin: 0 auto;
-    font-size: 13px;
+    padding: 10px !important;
+    font-size: 11px;
+    line-height: 1.25;
+    box-sizing: border-box;
+  }
+
+  .print-only .payslip-header {
+    margin-bottom: 10px;
+  }
+
+  .print-only .payslip-logo {
+    width: 150px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .print-only .payslip-info-cell {
+    padding: 4px 8px;
+  }
+
+  .print-only .payslip-section-title {
+    padding: 6px 0 3px;
+  }
+
+  .print-only .payslip-calc {
+    padding: 4px 2px;
+  }
+
+  .print-only .payslip-signatures {
+    display: none;
   }
 }
 
