@@ -61,7 +61,11 @@ const RegisterEmployee = () => {
       };
 
       const res = await api.post('/users/register', payload);
-      toast.success(`Employee ${res.data.data?.name || ''} registered! ID: ${res.data.data?.employeeId}`);
+      if (res.data.emailSent === false) {
+        toast.error(`Employee registered, but the welcome email could not be sent. ID: ${res.data.data?.employeeId}`);
+      } else {
+        toast.success(`Employee ${res.data.data?.name || ''} registered and welcome email sent! ID: ${res.data.data?.employeeId}`);
+      }
       navigate('/admin/employees');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed');

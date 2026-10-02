@@ -63,7 +63,11 @@ const Employees = () => {
       setEmailForm({ subject: '', message: '' });
       setSelectedIds([]);
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to send email');
+      const failedRecipients = err.response?.data?.data?.failedRecipients || [];
+      const detail = failedRecipients.length
+        ? ` Failed: ${failedRecipients.map(recipient => recipient.email).join(', ')}`
+        : '';
+      toast.error(`${err.response?.data?.message || 'Failed to send email'}${detail}`);
     } finally {
       setSendingEmail(false);
     }

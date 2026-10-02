@@ -112,8 +112,8 @@ connectToMongoDB()
       }
 
       verifyEmailTransport()
-        .then(() => console.log('[email] SMTP connection verified'))
-        .catch((error) => console.error('[email] SMTP verification failed', {
+        .then(() => console.log('[email] MailerSend configuration verified'))
+        .catch((error) => console.error('[email] MailerSend configuration check failed', {
           reason: error.message,
           code: error.code,
           response: error.response,
