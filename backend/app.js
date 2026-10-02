@@ -6,6 +6,7 @@ import helmet from 'helmet';
 
 import { connectToMongoDB } from './config/database.js';
 import { seedSuperAdmin } from './utils/seedSuperAdmin.js';
+import { isEmailConfigured, verifyEmailTransport } from './services/email.service.js';
 
 import healthRouter from './routes/health.routes.js';
 import authRouter from './routes/auth.routes.js';
@@ -43,6 +44,8 @@ const allowedOrigins = [
   'http://admin.dzenotechnepal.com.np',
   'https://dzenotechnepal.com.np',
   'http://dzenotechnepal.com.np',
+  'https://www.dzenotechnepal.com.np',
+  'http://www.dzenotechnepal.com.np',
 ].map(normalizeOrigin);
 
 if (process.env.FRONTEND_URL) allowedOrigins.push(...process.env.FRONTEND_URL.split(',').map(normalizeOrigin));
@@ -103,6 +106,18 @@ connectToMongoDB()
   .then(() => {
     app.listen(port, () => {
       console.log(`Backend server running on port ${port}`);
+      if (!isEmailConfigured()) {
+        console.warn('[email] SMTP is not configured');
+        return;
+      }
+
+      verifyEmailTransport()
+        .then(() => console.log('[email] SMTP connection verified'))
+        .catch((error) => console.error('[email] SMTP verification failed', {
+          reason: error.message,
+          code: error.code,
+          response: error.response,
+        }));
     });
   })
   .catch((error) => {

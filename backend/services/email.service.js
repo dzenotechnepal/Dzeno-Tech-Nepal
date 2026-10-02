@@ -19,19 +19,56 @@ export const isEmailConfigured = () => Boolean(
 
 export const sendCompanyEmail = async ({ to, subject, text, html }) => {
   if (!isEmailConfigured()) {
-    throw new Error('Email service is not configured');
+    const error = new Error('Email service is not configured');
+    console.error('[email] send failed', { reason: error.message, subject });
+    throw error;
   }
   if (!Array.isArray(to) || to.length === 0) {
-    throw new Error('At least one recipient is required');
+    const error = new Error('At least one recipient is required');
+    console.error('[email] send failed', { reason: error.message, subject });
+    throw error;
   }
 
-  return transporter.sendMail({
+  const recipients = to.filter(Boolean);
+  if (recipients.length === 0) {
+    const error = new Error('At least one valid recipient is required');
+    console.error('[email] send failed', { reason: error.message, subject });
+    throw error;
+  }
+
+  const message = {
     from: process.env.EMAIL_FROM || `Dzeno Tech Nepal <${process.env.EMAIL_USER}>`,
-    to: to.join(', '),
+    to: recipients.join(', '),
     subject,
     text,
     html,
+  };
+
+  console.log('[email] sending', {
+    from: process.env.EMAIL_USER,
+    recipients,
+    subject,
   });
+
+  try {
+    const info = await transporter.sendMail(message);
+    console.log('[email] sent', {
+      messageId: info.messageId,
+      accepted: info.accepted,
+      rejected: info.rejected,
+      response: info.response,
+    });
+    return info;
+  } catch (error) {
+    console.error('[email] send failed', {
+      recipients,
+      subject,
+      reason: error.message,
+      code: error.code,
+      response: error.response,
+    });
+    throw error;
+  }
 };
 
 export const sendWelcomeEmail = async ({ name, email, password }) => {
