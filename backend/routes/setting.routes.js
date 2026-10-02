@@ -5,6 +5,6 @@ import { authenticate, authorize } from "../middleware/auth.middleware.js";
 const router = express.Router();
 router.use(authenticate);
 router.get("/", getSettings);
-router.put("/", authorize("admin", "superadmin"), updateSettings);
+router.put("/", authorize("admin", "superadmin", "ceo"), updateSettings);
 
 export default router;

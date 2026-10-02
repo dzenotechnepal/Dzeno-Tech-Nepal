@@ -12,7 +12,7 @@ const ROLES = ["superadmin", "admin", "ceo", "developer", "employee", "intern"];
 const Employees = () => {
   const navigate = useNavigate();
   const { hasRole } = useAuth();
-  const isAdmin = hasRole(["admin", "superadmin"]);
+  const isAdmin = hasRole(["admin", "superadmin", "ceo"]);
   const isPublicDirectory = hasRole(["developer", "employee", "intern"]);
 
   const [employees, setEmployees] = useState([]);

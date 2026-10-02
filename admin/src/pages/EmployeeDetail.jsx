@@ -34,7 +34,7 @@ const EmployeeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { hasRole } = useAuth();
-  const isAdmin = hasRole(["admin", "superadmin"]);
+  const isAdmin = hasRole(["admin", "superadmin", "ceo"]);
 
   const [activeTab, setActiveTab] = useState("info");
   const [employee, setEmployee] = useState(null);

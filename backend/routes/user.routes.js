@@ -27,9 +27,9 @@ router.get(
   getUserById,
 );
 
-router.post("/register", authorize("superadmin", "admin"), registerUser);
-router.put("/:id", authorize("superadmin", "admin"), updateUser);
-router.delete("/:id", authorize("superadmin"), deleteUser);
+router.post("/register", authorize("superadmin", "admin", "ceo"), registerUser);
+router.put("/:id", authorize("superadmin", "admin", "ceo"), updateUser);
+router.delete("/:id", authorize("superadmin", "admin", "ceo"), deleteUser);
 
 router.put("/:id/bank", authorize("superadmin", "admin", "ceo"), updateBankInfo);
 

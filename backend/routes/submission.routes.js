@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {
   createContactInquiry,
   createJobApplication,
@@ -6,20 +6,20 @@ import {
   updateContactInquiry,
   getJobApplications,
   updateJobApplication,
-} from '../controller/submission.controller.js';
-import { authenticate, authorize } from '../middleware/auth.middleware.js';
+} from "../controller/submission.controller.js";
+import { authenticate, authorize } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.post('/contact', createContactInquiry);
-router.post('/applications', createJobApplication);
+router.post("/contact", createContactInquiry);
+router.post("/applications", createJobApplication);
 
-router.use(authenticate, authorize('admin', 'superadmin'));
-router.get('/contact', getContactInquiries);
-router.patch('/contact/:id', updateContactInquiry);
-router.get('/inquiries', getContactInquiries);
-router.patch('/inquiries/:id', updateContactInquiry);
-router.get('/applications', getJobApplications);
-router.patch('/applications/:id', updateJobApplication);
+router.use(authenticate, authorize("admin", "superadmin", "ceo"));
+router.get("/contact", getContactInquiries);
+router.patch("/contact/:id", updateContactInquiry);
+router.get("/inquiries", getContactInquiries);
+router.patch("/inquiries/:id", updateContactInquiry);
+router.get("/applications", getJobApplications);
+router.patch("/applications/:id", updateJobApplication);
 
 export default router;

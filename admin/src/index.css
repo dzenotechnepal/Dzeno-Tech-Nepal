@@ -75,6 +75,41 @@ h3 { font-size: 1.25rem; font-weight: 500; }
   border: 1px solid var(--border-color);
 }
 
+.email-recipient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.email-recipient {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.email-recipient:hover {
+  background: var(--bg-tertiary);
+}
+
+.email-recipient-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.email-recipient-details small {
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* Layout Utilities */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
