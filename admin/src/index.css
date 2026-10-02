@@ -57,6 +57,24 @@ h3 { font-size: 1.25rem; font-weight: 500; }
 .font-bold { font-weight: bold; }
 .font-semibold { font-weight: 600; }
 
+.employee-avatar {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.employee-avatar-fallback {
+  border: 1px solid var(--border-color);
+}
+
 /* Layout Utilities */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
@@ -889,7 +907,15 @@ h3 { font-size: 1.25rem; font-weight: 500; }
   }
 
   .no-print { display: none !important; }
-  .print-only { display: block !important; }
+  .print-only {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    page-break-after: avoid !important;
+  }
   .print-only,
   .print-only * {
     visibility: visible !important;
@@ -910,10 +936,15 @@ h3 { font-size: 1.25rem; font-weight: 500; }
     font-size: 11px;
     line-height: 1.25;
     box-sizing: border-box;
+    height: auto;
+    max-height: none;
+    display: block;
+    overflow: visible;
+    page-break-inside: avoid;
   }
 
   .print-only .payslip-header {
-    margin-bottom: 10px;
+    margin-bottom: 14px;
   }
 
   .print-only .payslip-logo {
@@ -922,11 +953,11 @@ h3 { font-size: 1.25rem; font-weight: 500; }
   }
 
   .print-only .payslip-info-cell {
-    padding: 4px 8px;
+    padding: 6px 8px;
   }
 
   .print-only .payslip-section-title {
-    padding: 6px 0 3px;
+    padding: 9px 0 4px;
   }
 
   .print-only .payslip-calc {
@@ -935,6 +966,13 @@ h3 { font-size: 1.25rem; font-weight: 500; }
 
   .print-only .payslip-signatures {
     display: none;
+  }
+
+  .print-only .payslip-footer {
+    margin-top: 18px !important;
+    padding-top: 10px !important;
+    flex-shrink: 0;
+    page-break-inside: avoid;
   }
 }
 

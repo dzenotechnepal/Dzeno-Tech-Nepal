@@ -1,14 +1,18 @@
-import { Leave } from '../models/Leave.model.js';
+import { Leave } from "../models/Leave.model.js";
 
 export const applyLeave = async (req, res) => {
   try {
     const { leaveType, startDate, endDate, totalDays, reason } = req.body;
 
     if (!leaveType || !startDate || !endDate || !reason?.trim()) {
-      return res.status(400).json({ success: false, message: 'Leave type, dates, and reason are required' });
+      return res
+        .status(400)
+        .json({ success: false, message: "Leave type, dates, and reason are required" });
     }
     if (new Date(endDate) < new Date(startDate)) {
-      return res.status(400).json({ success: false, message: 'End date cannot be before start date' });
+      return res
+        .status(400)
+        .json({ success: false, message: "End date cannot be before start date" });
     }
 
     const leave = new Leave({
@@ -18,11 +22,13 @@ export const applyLeave = async (req, res) => {
       endDate,
       totalDays: Number(totalDays) || 1,
       reason,
-      status: 'pending'
+      status: "pending",
     });
 
     await leave.save();
-    return res.status(201).json({ success: true, data: leave, message: 'Leave applied successfully' });
+    return res
+      .status(201)
+      .json({ success: true, data: leave, message: "Leave applied successfully" });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -34,12 +40,14 @@ export const getLeaves = async (req, res) => {
     // Here we assume admin is viewing all if they call this base route
     // and employees have a different view, or we can check role
     let query = {};
-    if (['developer', 'employee'].includes(req.user.role)) {
+    if (["developer", "employee", "intern"].includes(req.user.role)) {
       query.employeeId = req.user.id;
     }
 
-    const leaves = await Leave.find(query).populate('employeeId', 'name employeeId').sort({ createdAt: -1 });
-    return res.status(200).json({ success: true, data: leaves, message: 'Leaves fetched' });
+    const leaves = await Leave.find(query)
+      .populate("employeeId", "name employeeId")
+      .sort({ createdAt: -1 });
+    return res.status(200).json({ success: true, data: leaves, message: "Leaves fetched" });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -47,13 +55,17 @@ export const getLeaves = async (req, res) => {
 
 export const approveLeave = async (req, res) => {
   try {
-    const leave = await Leave.findByIdAndUpdate(req.params.id, {
-      status: 'approved',
-      approvedBy: req.user.id
-    }, { new: true });
+    const leave = await Leave.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: "approved",
+        approvedBy: req.user.id,
+      },
+      { new: true },
+    );
 
-    if (!leave) return res.status(404).json({ success: false, message: 'Leave not found' });
-    return res.status(200).json({ success: true, data: leave, message: 'Leave approved' });
+    if (!leave) return res.status(404).json({ success: false, message: "Leave not found" });
+    return res.status(200).json({ success: true, data: leave, message: "Leave approved" });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -61,13 +73,17 @@ export const approveLeave = async (req, res) => {
 
 export const rejectLeave = async (req, res) => {
   try {
-    const leave = await Leave.findByIdAndUpdate(req.params.id, {
-      status: 'rejected',
-      approvedBy: req.user.id
-    }, { new: true });
+    const leave = await Leave.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: "rejected",
+        approvedBy: req.user.id,
+      },
+      { new: true },
+    );
 
-    if (!leave) return res.status(404).json({ success: false, message: 'Leave not found' });
-    return res.status(200).json({ success: true, data: leave, message: 'Leave rejected' });
+    if (!leave) return res.status(404).json({ success: false, message: "Leave not found" });
+    return res.status(200).json({ success: true, data: leave, message: "Leave rejected" });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -76,16 +92,20 @@ export const rejectLeave = async (req, res) => {
 export const deleteLeave = async (req, res) => {
   try {
     const leave = await Leave.findById(req.params.id);
-    if (!leave) return res.status(404).json({ success: false, message: 'Leave not found' });
-    const isAdmin = ['superadmin', 'admin', 'ceo'].includes(req.user.role);
+    if (!leave) return res.status(404).json({ success: false, message: "Leave not found" });
+    const isAdmin = ["superadmin", "admin", "ceo"].includes(req.user.role);
     if (!isAdmin && String(leave.employeeId) !== String(req.user.id)) {
-      return res.status(403).json({ success: false, message: 'You can only cancel your own leave' });
+      return res
+        .status(403)
+        .json({ success: false, message: "You can only cancel your own leave" });
     }
-    if (!isAdmin && leave.status !== 'pending') {
-      return res.status(400).json({ success: false, message: 'Only pending leave can be cancelled' });
+    if (!isAdmin && leave.status !== "pending") {
+      return res
+        .status(400)
+        .json({ success: false, message: "Only pending leave can be cancelled" });
     }
     await leave.deleteOne();
-    return res.status(200).json({ success: true, message: 'Leave cancelled' });
+    return res.status(200).json({ success: true, message: "Leave cancelled" });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -94,7 +114,9 @@ export const deleteLeave = async (req, res) => {
 export const getEmployeeLeaves = async (req, res) => {
   try {
     const leaves = await Leave.find({ employeeId: req.params.id }).sort({ createdAt: -1 });
-    return res.status(200).json({ success: true, data: leaves, message: 'Employee leaves fetched' });
+    return res
+      .status(200)
+      .json({ success: true, data: leaves, message: "Employee leaves fetched" });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

@@ -1,10 +1,14 @@
-import express from 'express';
-import { getStats } from '../controller/dashboard.controller.js';
-import { authenticate, authorize } from '../middleware/auth.middleware.js';
+import express from "express";
+import { getStats } from "../controller/dashboard.controller.js";
+import { authenticate, authorize } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
 router.use(authenticate);
-router.get('/stats', authorize('superadmin', 'admin', 'ceo'), getStats);
+router.get(
+  "/stats",
+  authorize("superadmin", "admin", "ceo", "developer", "employee", "intern"),
+  getStats,
+);
 
 export default router;

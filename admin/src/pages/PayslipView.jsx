@@ -140,7 +140,7 @@ const fmt = (num) =>
   Number(num).toLocaleString('en-NP', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
 const PayslipTemplate = ({ data }) => {
-  const rowStyle = { display: 'flex', justifyContent: 'space-between', padding: '5px 0' };
+  const rowStyle = { display: 'flex', justifyContent: 'space-between', padding: '6px 0' };
   const boldRowStyle = { ...rowStyle, fontWeight: '700' };
   const dividerStyle = { borderTop: '1px solid #334155', margin: '5px 0' };
 
@@ -149,12 +149,12 @@ const PayslipTemplate = ({ data }) => {
       {/* Header */}
       <div className="payslip-header">
         <img className="payslip-logo" src="/logo.png" alt="Dzeno Tech Nepal" style={{ width: '220px', maxWidth: '100%', marginBottom: '10px' }} />
-        <h2 style={{ margin: 0, fontSize: '22px', fontWeight: '700', letterSpacing: '0.5px' }}>
+        <h2 style={{ margin: 0, marginTop: '16px', fontSize: '22px', fontWeight: '700', letterSpacing: '0.5px' }}>
           {data.companyName}
         </h2>
         <div style={{ fontSize: '14px', marginTop: '4px', opacity: 0.85 }}>{data.companyAddress}</div>
         <div className="payslip-divider" />
-        <div style={{ fontSize: '15px', fontWeight: '600', letterSpacing: '1px', marginTop: '4px' }}>
+        <div style={{ fontSize: '15px', fontWeight: '600', letterSpacing: '1px', marginTop: '16px' }}>
           Payslip – {data.monthYear}
         </div>
       </div>
@@ -179,7 +179,7 @@ const PayslipTemplate = ({ data }) => {
         </div>
       </div>
 
-      <div className="payslip-section-title">Attendance Summary</div>
+      <div className="payslip-section-title mt-4">Attendance Summary</div>
       <div className="payslip-info-grid payslip-attendance-print-grid">
         <div className="payslip-info-cell"><span className="payslip-label">Present Days</span><span className="payslip-value">{data.attendanceSummary.present || 0}</span></div>
         <div className="payslip-info-cell"><span className="payslip-label">Half Days</span><span className="payslip-value">{data.attendanceSummary.halfDay || 0}</span></div>
@@ -188,7 +188,7 @@ const PayslipTemplate = ({ data }) => {
       </div>
 
       {/* Net Pay Calculation */}
-      <div className="payslip-section-title">Net Pay Calculation</div>
+      <div className="payslip-section-title mt-4">Net Pay Calculation</div>
 
       <div className="payslip-calc">
         {/* Header row */}
@@ -247,10 +247,10 @@ const PayslipTemplate = ({ data }) => {
           <span>{fmt(data.netPay)}</span>
         </div>
 
-        <div style={dividerStyle} />
+        {/* <div style={dividerStyle} /> */}
       </div>
 
-      <div style={{ borderTop: '1px solid currentColor', marginTop: '16px', paddingTop: '10px', fontSize: '11px', opacity: 0.6, textAlign: 'center' }}>
+      <div className="payslip-footer" style={{ borderTop: '1px solid currentColor', marginTop: '24px', fontSize: '11px', opacity: 0.6, textAlign: 'center' }}>
         {data.payslipFooter} No physical signature is required.
         Payslip No: {data.payslipNumber}
       </div>

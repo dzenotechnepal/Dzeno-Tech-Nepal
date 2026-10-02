@@ -69,11 +69,14 @@ export const getUsers = async (req, res) => {
       query.role = role;
     }
 
+    const isPublicDirectory = ["developer", "employee", "intern"].includes(req.user.role);
+    const fields = isPublicDirectory
+      ? "name email employeeId designation department avatar"
+      : "name email role designation department employeeId panNumber gender age citizenshipNumber phone address isActive bankName bankAccountHolderName bankAccountNumber bankBranch ssfEnrolled avatar joiningDate createdAt";
+
     const [users, total] = await Promise.all([
       User.find(query)
-        .select(
-          "name email role designation department employeeId panNumber gender age citizenshipNumber phone address isActive bankName bankAccountHolderName bankAccountNumber bankBranch ssfEnrolled avatar joiningDate createdAt",
-        )
+        .select(fields)
         .skip((page - 1) * limit)
         .limit(Number(limit))
         .sort({ createdAt: -1 })
@@ -93,7 +96,10 @@ export const getUsers = async (req, res) => {
 
 export const getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select("-password");
+    const fields = ["developer", "employee", "intern"].includes(req.user.role)
+      ? "name email designation department avatar"
+      : "-password";
+    const user = await User.findById(req.params.id).select(fields);
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
@@ -145,7 +151,7 @@ export const deleteUser = async (req, res) => {
 export const getRoles = (req, res) => {
   return res.status(200).json({
     success: true,
-    data: ["superadmin", "admin", "ceo", "developer", "employee"],
+    data: ["superadmin", "admin", "ceo", "developer", "employee", "intern"],
     message: "Roles fetched",
   });
 };
@@ -166,9 +172,13 @@ export const updateBankInfo = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
+      const isPublicDirectory = ["developer", "employee", "intern"].includes(req.user.role);
+      const fields = isPublicDirectory
+        ? "name email designation department avatar"
+        : "name email role designation department employeeId panNumber gender age citizenshipNumber phone address isActive bankName bankAccountHolderName bankAccountNumber bankBranch ssfEnrolled avatar joiningDate createdAt";
     }
     return res
-      .status(200)
+      .select(fields)
       .json({ success: true, data: user, message: "Bank info updated successfully" });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
