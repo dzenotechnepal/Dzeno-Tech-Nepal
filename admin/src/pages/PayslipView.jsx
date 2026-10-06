@@ -118,7 +118,7 @@ const PayslipView = () => {
         <PayslipTemplate data={data} />
       </div>
 
-      <div className="card no-print payslip-attendance-summary">
+      {/* <div className="card no-print payslip-attendance-summary">
         <h3>Attendance Used</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div><span className="text-secondary text-sm">Present</span><strong>{data.attendanceSummary.present || 0}</strong></div>
@@ -126,7 +126,7 @@ const PayslipView = () => {
           <div><span className="text-secondary text-sm">Leave / Absent</span><strong>{(data.attendanceSummary.leave || 0) + (data.attendanceSummary.absent || 0)}</strong></div>
           <div><span className="text-secondary text-sm">Total Hours</span><strong>{data.attendanceSummary.totalHours || 0}h</strong></div>
         </div>
-      </div>
+      </div> */}
 
       {/* Print-only version (full page) */}
       <div className="print-only" style={{ display: 'none' }}>
@@ -148,7 +148,7 @@ const PayslipTemplate = ({ data }) => {
     <div className="payslip-box">
       {/* Header */}
       <div className="payslip-header">
-        <img className="payslip-logo" src="/logo.png" alt="Dzeno Tech Nepal" style={{ width: '220px', maxWidth: '100%', marginBottom: '10px' }} />
+        <img className="payslip-logo" src="/no-bg-logo.png" alt="Dzeno Tech Nepal" style={{ width: '220px', maxWidth: '100%', marginBottom: '10px' }} />
         <h2 style={{ margin: 0, marginTop: '16px', fontSize: '22px', fontWeight: '700', letterSpacing: '0.5px' }}>
           {data.companyName}
         </h2>
@@ -179,13 +179,13 @@ const PayslipTemplate = ({ data }) => {
         </div>
       </div>
 
-      <div className="payslip-section-title mt-4">Attendance Summary</div>
+      {/* <div className="payslip-section-title mt-4">Attendance Summary</div>
       <div className="payslip-info-grid payslip-attendance-print-grid">
         <div className="payslip-info-cell"><span className="payslip-label">Present Days</span><span className="payslip-value">{data.attendanceSummary.present || 0}</span></div>
         <div className="payslip-info-cell"><span className="payslip-label">Half Days</span><span className="payslip-value">{data.attendanceSummary.halfDay || 0}</span></div>
         <div className="payslip-info-cell"><span className="payslip-label">Leave / Absent</span><span className="payslip-value">{(data.attendanceSummary.leave || 0) + (data.attendanceSummary.absent || 0)}</span></div>
         <div className="payslip-info-cell"><span className="payslip-label">Total Hours</span><span className="payslip-value">{data.attendanceSummary.totalHours || 0}h</span></div>
-      </div>
+      </div> */}
 
       {/* Net Pay Calculation */}
       <div className="payslip-section-title mt-4">Net Pay Calculation</div>
@@ -251,7 +251,7 @@ const PayslipTemplate = ({ data }) => {
       </div>
 
       <div className="payslip-footer" style={{ borderTop: '1px solid currentColor', marginTop: '24px', fontSize: '11px', opacity: 0.6, textAlign: 'center' }}>
-        {data.payslipFooter} No physical signature is required.
+        {data.payslipFooter}
         Payslip No: {data.payslipNumber}
       </div>
     </div>
