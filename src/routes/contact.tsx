@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight, Mail, Phone, MapPin } from "lucide-react";
+import { ArrowRight, Mail, Phone, MapPin, Building2, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
@@ -15,25 +15,62 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Tell Dzeno Tech Nepal about your software, IT services, or training project. Share your requirements and budget and we'll respond with next steps.",
+          "Tell Dzeno Tech Nepal about your software, IT services, or training project. Share your requirements and we'll respond with next steps. Located in Kathmandu, Nepal.",
+      },
+      {
+        name: "keywords",
+        content: "contact Dzeno Tech Nepal, software development inquiry, IT services Nepal, IT training Nepal, project consultation, technology partner Nepal"
       },
       { property: "og:title", content: "Contact Dzeno Tech Nepal" },
       {
-        property: "og:description",
+        property: "og:description", content: "Send a project inquiry to Dzeno Tech Nepal Pvt. Ltd." },
+      {
+        property: "og:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+      {
+        property: "og:url",
+        content: "https://dzenotechnepal.com.np/contact",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Contact Dzeno Tech Nepal",
+      },
+      {
+        name: "twitter:description",
         content: "Send a project inquiry to Dzeno Tech Nepal Pvt. Ltd.",
       },
+      {
+        name: "twitter:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://dzenotechnepal.com.np/contact" },
     ],
   }),
   component: Contact,
 });
 
-const services = ["Software Development", "IT Services", "IT Training", "Not sure yet"];
-const budgets = [
-  "Under NPR 50,000",
-  "NPR 50,000 – 1,00,000",
-  "NPR 1,00,000 – 2,00,000",
-  "Above NPR 2,00,000",
-  "To be discussed",
+const services = [
+  "Software Development",
+  "IT Services",
+  "IT Training",
+  "Social Media Management",
+  "Digital Marketing",
+  "SEO & Content Marketing",
+  "Website Development",
+  "Mobile App Development",
+  "Cloud Solutions",
+  "Not sure yet"
 ];
 
 const details = [
@@ -43,7 +80,10 @@ const details = [
 ];
 
 const fieldClass =
-  "mt-2 h-12 rounded-xl border-border bg-card/40 text-foreground placeholder:text-muted-foreground/70 focus-visible:ring-ring";
+  "mt-2 h-12 rounded-xl border-border bg-card/40 text-foreground placeholder:text-muted-foreground/70 focus-visible:ring-ring transition-all duration-200 focus-visible:bg-card/60";
+
+const selectClass =
+  "mt-2 h-12 w-full rounded-xl border border-border bg-card/40 px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all duration-200 focus-visible:bg-card/60 cursor-pointer";
 
 const apiUrl =
   import.meta.env["VITE_API_URL"] ||
@@ -69,7 +109,7 @@ function Contact() {
       <section className="container-x grid gap-12 pb-24 lg:grid-cols-[1.3fr_0.7fr] lg:gap-16 md:pb-32">
         <Reveal>
           <form
-            className="rounded-3xl border border-border bg-card/40 p-7 md:p-10"
+            className="rounded-3xl border border-border bg-card/40 p-7 md:p-10 shadow-lg"
             onSubmit={async (e) => {
               e.preventDefault();
               setSubmitting(true);
@@ -82,7 +122,6 @@ function Contact() {
                 email: formData.get("email"),
                 phone: formData.get("phone"),
                 service: formData.get("service"),
-                budget: formData.get("budget"),
                 message: formData.get("message"),
               };
 
@@ -116,55 +155,80 @@ function Contact() {
               }
             }}
           >
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div>
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  required
-                  placeholder="Your name"
-                  className={fieldClass}
-                />
+            <div className="mb-8 flex items-center gap-3 rounded-2xl bg-primary/5 border border-primary/10 p-4">
+              <MessageSquare className="size-5 text-primary" />
+              <p className="text-sm text-muted-foreground">
+                Tell us about your project. We'll respond within 24 hours.
+              </p>
+            </div>
+
+            <div className="mb-8">
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Contact Information</h3>
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <Label htmlFor="name" className="text-sm font-medium">Full Name <span className="text-destructive">*</span></Label>
+                  <div className="relative mt-2">
+                    <Input
+                      id="name"
+                      name="name"
+                      required
+                      placeholder="John Doe"
+                      className={fieldClass}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="company" className="text-sm font-medium">Company Name</Label>
+                  <div className="relative mt-2">
+                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                    <Input
+                      id="company"
+                      name="company"
+                      placeholder="Your company"
+                      className={fieldClass + " pl-10"}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="email" className="text-sm font-medium">Email Address <span className="text-destructive">*</span></Label>
+                  <div className="relative mt-2">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="john@company.com"
+                      className={fieldClass + " pl-10"}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="phone" className="text-sm font-medium">Phone Number</Label>
+                  <div className="relative mt-2">
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="+977 9800000000"
+                      className={fieldClass + " pl-10"}
+                    />
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <div className="mb-8">
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Project Details</h3>
               <div>
-                <Label htmlFor="company">Company</Label>
-                <Input
-                  id="company"
-                  name="company"
-                  placeholder="Company name"
-                  className={fieldClass}
-                />
-              </div>
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="your_email"
-                  className={fieldClass}
-                />
-              </div>
-              <div>
-                <Label htmlFor="phone">Phone</Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="+977 ..."
-                  className={fieldClass}
-                />
-              </div>
-              <div>
-                <Label htmlFor="service">Service Required</Label>
+                <Label htmlFor="service" className="text-sm font-medium">Service Required <span className="text-destructive">*</span></Label>
                 <select
                   id="service"
                   name="service"
                   required
                   defaultValue=""
-                  className="mt-2 h-12 w-full rounded-xl border border-border bg-card/40 px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className={selectClass}
                 >
                   <option value="" disabled>
                     Select a service
@@ -176,77 +240,95 @@ function Contact() {
                   ))}
                 </select>
               </div>
-              <div>
-                <Label htmlFor="budget">Project Budget</Label>
-                <select
-                  id="budget"
-                  name="budget"
-                  defaultValue=""
-                  className="mt-2 h-12 w-full rounded-xl border border-border bg-card/40 px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  <option value="" disabled>
-                    Select a range
-                  </option>
-                  {budgets.map((b) => (
-                    <option key={b} value={b}>
-                      {b}
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
 
-            <div className="mt-6">
-              <Label htmlFor="message">Message</Label>
+            <div>
+              <Label htmlFor="message" className="text-sm font-medium">Project Description <span className="text-destructive">*</span></Label>
               <Textarea
                 id="message"
                 name="message"
                 required
-                rows={5}
-                placeholder="What are you trying to achieve?"
-                className="mt-2 rounded-xl border-border bg-card/40 text-foreground placeholder:text-muted-foreground/70"
+                rows={6}
+                placeholder="Describe your project requirements, goals, and any specific features you need..."
+                className="mt-2 rounded-xl border-border bg-card/40 text-foreground placeholder:text-muted-foreground/70 transition-all duration-200 focus-visible:bg-card/60"
               />
+              <p className="mt-2 text-xs text-muted-foreground">
+                The more details you provide, the better we can understand your needs.
+              </p>
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              className="group mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-accent px-6 py-3.5 text-sm font-medium text-primary-foreground transition-transform duration-300 hover:scale-[1.03] disabled:opacity-60"
+              className="group mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-accent px-8 py-4 text-sm font-medium text-primary-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:opacity-60 disabled:hover:scale-100"
             >
-              {submitting ? "Sending..." : "Send Inquiry"}
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+              {submitting ? (
+                <>
+                  <span className="inline-block size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  Send Inquiry
+                  <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </>
+              )}
             </button>
           </form>
         </Reveal>
 
         <Reveal delay={140}>
-          <div className="space-y-4">
-            {details.map(({ Icon, label, value }) => (
-              <div key={label} className="rounded-2xl border border-border p-6">
-                <div className="flex items-center gap-3 text-muted-foreground">
-                  <Icon className="size-4 text-primary" />
-                  <span className="text-xs uppercase tracking-[0.2em]">{label}</span>
-                </div>
-                <p className="mt-3 text-sm">{value}</p>
+          <div className="space-y-6">
+            <div className="rounded-2xl border border-border bg-card/40 p-6 shadow-sm">
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Get in Touch</h3>
+              <div className="space-y-4">
+                {details.map(({ Icon, label, value }) => (
+                  <div key={label} className="flex items-start gap-3">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                      <Icon className="size-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
+                      <p className="mt-1 text-sm font-medium">{value}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-            <div className="rounded-2xl border border-border p-6">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Social</p>
-              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-                {["LinkedIn", "Facebook", "GitHub", "Instagram"].map((s) => (
+            </div>
+
+            <div className="rounded-2xl border border-border bg-card/40 p-6 shadow-sm">
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Connect With Us</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { name: "LinkedIn", url: "https://www.linkedin.com/company/dzeno-tech-nepal/" },
+                  { name: "Facebook", url: "https://www.facebook.com/profile.php?id=61594519552480" },
+                  { name: "Instagram", url: "https://www.instagram.com/dzenotechnepal" },
+                  { name: "TikTok", url: "https://www.tiktok.com/@dzenotechnepal" },
+                  { name: "GitHub", url: "https://github.com/dzenotechnepal" },
+                  { name: "GitLab", url: "https://gitlab.com/dzenotechnepal" },
+                ].map((social) => (
                   <a
-                    key={s}
-                    href="https://www.linkedin.com/company/dzeno-tech-nepal/"
-                    className="text-muted-foreground transition-colors hover:text-foreground"
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center rounded-xl border border-border bg-card/60 px-4 py-3 text-sm font-medium text-foreground transition-all duration-200 hover:border-primary/50 hover:bg-primary/10"
                   >
-                    {s}
+                    {social.name}
                   </a>
                 ))}
               </div>
             </div>
-            <p className="px-1 text-xs text-muted-foreground">
-              Contact details and social links are editable placeholders.
-            </p>
+
+            <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
+              <h3 className="mb-2 text-sm font-semibold text-primary">Office Hours</h3>
+              <p className="text-sm text-muted-foreground">
+                Sunday - Friday: 10:00 AM - 6:00 PM
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Saturday: Closed
+              </p>
+            </div>
           </div>
         </Reveal>
       </section>

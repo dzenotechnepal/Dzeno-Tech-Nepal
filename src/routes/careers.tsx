@@ -13,13 +13,48 @@ export const Route = createFileRoute("/careers")({
       {
         name: "description",
         content:
-          "Open roles, internships, culture, and benefits at Dzeno Tech Nepal Pvt. Ltd. Apply to build software, IT services, and training with us.",
+          "Open roles, internships, culture, and benefits at Dzeno Tech Nepal Pvt. Ltd. in Kathmandu. Apply to build software, IT services, and training with us.",
       },
-      { property: "og:title", content: "Careers - Build Your Future With Dzeno" },
+      {
+        name: "keywords",
+        content: "careers Nepal, software jobs Kathmandu, IT jobs Nepal, developer jobs, internship Nepal, tech company careers, Dzeno Tech Nepal careers"
+      },
+      { property: "og:title", content: "Careers - Build Your Future With Dzeno Tech Nepal" },
       {
         property: "og:description",
         content: "Open positions and internship opportunities at Dzeno Tech Nepal Pvt. Ltd.",
       },
+      {
+        property: "og:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+      {
+        property: "og:url",
+        content: "https://dzenotechnepal.com.np/careers",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Careers - Build Your Future With Dzeno Tech Nepal",
+      },
+      {
+        name: "twitter:description",
+        content: "Open positions and internship opportunities at Dzeno Tech Nepal Pvt. Ltd.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://dzenotechnepal.com.np/careers" },
     ],
   }),
   component: Careers,

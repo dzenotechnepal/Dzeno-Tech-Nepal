@@ -11,13 +11,46 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Dzeno Tech Nepal Pvt. Ltd. is a technology company focused on software development, IT services, and IT training. Learn our mission, vision, and values.",
+          "Dzeno Tech Nepal Pvt. Ltd. is a technology company focused on software development, IT services, and IT training in Kathmandu, Nepal. Learn our mission, vision, and values.",
+      },
+      {
+        name: "keywords",
+        content: "about Dzeno Tech Nepal, technology company Nepal, software company Kathmandu, IT services Nepal, IT training Nepal, mission vision"
       },
       { property: "og:title", content: "About Dzeno Tech Nepal — Technology With Purpose" },
       {
-        property: "og:description",
+        property: "og:description", content: "Who we are, our mission, vision, and the values behind our engineering work." },
+      {
+        property: "og:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+      {
+        property: "og:url",
+        content: "https://dzenotechnepal.com.np/about",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "About Dzeno Tech Nepal — Technology With Purpose",
+      },
+      {
+        name: "twitter:description",
         content: "Who we are, our mission, vision, and the values behind our engineering work.",
       },
+      {
+        name: "twitter:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://dzenotechnepal.com.np/about" },
     ],
   }),
   component: About,

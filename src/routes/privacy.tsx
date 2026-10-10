@@ -8,13 +8,39 @@ export const Route = createFileRoute("/privacy")({
       {
         name: "description",
         content:
-          "How Dzeno Tech Nepal Pvt. Ltd. collects, uses, and protects the information you share through this website.",
+          "How Dzeno Tech Nepal Pvt. Ltd. collects, uses, and protects the information you share through this website. Learn about our data handling practices.",
+      },
+      {
+        name: "keywords",
+        content: "privacy policy, data protection, information security, Dzeno Tech Nepal privacy"
       },
       { property: "og:title", content: "Privacy Policy — Dzeno Tech Nepal" },
       {
         property: "og:description",
+        content: "Our approach to data, inquiries, and information security." },
+      {
+        property: "og:url",
+        content: "https://dzenotechnepal.com.np/privacy",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary",
+      },
+      {
+        name: "twitter:title",
+        content: "Privacy Policy — Dzeno Tech Nepal",
+      },
+      {
+        name: "twitter:description",
         content: "Our approach to data, inquiries, and information security.",
       },
+    ],
+    links: [
+      { rel: "canonical", href: "https://dzenotechnepal.com.np/privacy" },
     ],
   }),
   component: Privacy,

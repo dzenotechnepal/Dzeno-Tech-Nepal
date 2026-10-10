@@ -13,7 +13,11 @@ export const Route = createFileRoute("/services")({
       {
         name: "description",
         content:
-          "Custom software, business applications, APIs, IT consulting, infrastructure, cloud solutions, and project-based IT training from Dzeno Tech Nepal.",
+          "Custom software, business applications, APIs, IT consulting, infrastructure, cloud solutions, and project-based IT training from Dzeno Tech Nepal in Kathmandu.",
+      },
+      {
+        name: "keywords",
+        content: "software development Nepal, web development, mobile app development, IT services, IT consulting, cloud solutions, IT training Nepal, digital transformation"
       },
       { property: "og:title", content: "Services — Dzeno Tech Nepal" },
       {
@@ -21,6 +25,38 @@ export const Route = createFileRoute("/services")({
         content:
           "Software development, IT services, and IT training built around real business requirements.",
       },
+      {
+        property: "og:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+      {
+        property: "og:url",
+        content: "https://dzenotechnepal.com.np/services",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Services — Dzeno Tech Nepal",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Software development, IT services, and IT training built around real business requirements.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://dzenotechnepal.com.np/services" },
     ],
   }),
   component: Services,

@@ -8,13 +8,39 @@ export const Route = createFileRoute("/terms")({
       {
         name: "description",
         content:
-          "The terms that apply when you use the Dzeno Tech Nepal Pvt. Ltd. website and submit project inquiries.",
+          "The terms that apply when you use the Dzeno Tech Nepal Pvt. Ltd. website and submit project inquiries. Read our website usage terms.",
+      },
+      {
+        name: "keywords",
+        content: "terms of use, website terms, legal terms, Dzeno Tech Nepal terms"
       },
       { property: "og:title", content: "Terms of Use — Dzeno Tech Nepal" },
       {
         property: "og:description",
+        content: "Website terms, intellectual property, and engagement terms." },
+      {
+        property: "og:url",
+        content: "https://dzenotechnepal.com.np/terms",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary",
+      },
+      {
+        name: "twitter:title",
+        content: "Terms of Use — Dzeno Tech Nepal",
+      },
+      {
+        name: "twitter:description",
         content: "Website terms, intellectual property, and engagement terms.",
       },
+    ],
+    links: [
+      { rel: "canonical", href: "https://dzenotechnepal.com.np/terms" },
     ],
   }),
   component: Terms,

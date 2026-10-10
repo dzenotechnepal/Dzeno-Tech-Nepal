@@ -11,7 +11,11 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Dzeno Tech Nepal delivers innovative software development, reliable IT services, and practical IT training for businesses ready to grow digitally.",
+          "Dzeno Tech Nepal delivers innovative software development, reliable IT services, and practical IT training for businesses ready to grow digitally in Kathmandu, Nepal.",
+      },
+      {
+        name: "keywords",
+        content: "software development Nepal, IT services Kathmandu, IT training Nepal, web development, mobile app development, cloud solutions, digital marketing, SEO, technology company Nepal"
       },
       {
         property: "og:title",
@@ -22,6 +26,38 @@ export const Route = createFileRoute("/")({
         content:
           "Software development, IT services, and IT training from a modern technology partner in Nepal.",
       },
+      {
+        property: "og:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+      {
+        property: "og:url",
+        content: "https://dzenotechnepal.com.np/",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Dzeno Tech Nepal — Technology That Moves Businesses Forward",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Software development, IT services, and IT training from a modern technology partner in Nepal.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://dzenotechnepal.com.np/" },
     ],
   }),
   component: Home,

@@ -7,7 +7,6 @@ const contactInquirySchema = new mongoose.Schema(
     email: { type: String, required: true, trim: true, lowercase: true },
     phone: { type: String, trim: true },
     service: { type: String, required: true, trim: true },
-    budget: { type: String, trim: true },
     message: { type: String, required: true, trim: true },
     status: { type: String, enum: ['new', 'in_progress', 'resolved', 'archived'], default: 'new' },
     adminNotes: { type: String, trim: true },

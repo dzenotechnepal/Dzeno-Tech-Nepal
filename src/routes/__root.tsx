@@ -85,11 +85,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Dzeno Tech Nepal Pvt. Ltd. builds software, delivers IT services, and runs practical IT training for growing businesses.",
+          "Dzeno Tech Nepal Pvt. Ltd. builds software, delivers IT services, and runs practical IT training for growing businesses in Kathmandu, Nepal.",
       },
+      { name: "keywords", content: "software development, IT services, IT training, web development, mobile app development, cloud solutions, digital marketing, SEO, Nepal, Kathmandu" },
       { name: "author", content: "Dzeno Tech Nepal Pvt. Ltd." },
+      { name: "robots", content: "index, follow" },
+      { name: "googlebot", content: "index, follow" },
       { property: "og:type", content: "website" },
+      { property: "og:title", content: "Dzeno Tech Nepal — Software, IT Services & IT Training" },
+      { property: "og:description", content: "Dzeno Tech Nepal Pvt. Ltd. builds software, delivers IT services, and runs practical IT training for growing businesses in Kathmandu, Nepal." },
+      { property: "og:url", content: "https://dzenotechnepal.com.np/" },
+      { property: "og:image", content: "https://dzenotechnepal.com.np/logo.png" },
+      { property: "og:site_name", content: "Dzeno Tech Nepal" },
+      { property: "og:locale", content: "en_US" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Dzeno Tech Nepal — Software, IT Services & IT Training" },
+      { name: "twitter:description", content: "Dzeno Tech Nepal Pvt. Ltd. builds software, delivers IT services, and runs practical IT training for growing businesses in Kathmandu, Nepal." },
+      { name: "twitter:image", content: "https://dzenotechnepal.com.np/logo.png" },
+      { name: "twitter:site", content: "@dzenotechnepal" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -99,8 +112,44 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap",
       },
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon.png" },
+      { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon.png" },
+      { rel: "apple-touch-icon", sizes: "180x180", href: "/favicon.png" },
+      { rel: "shortcut icon", href: "/favicon.png" },
+      { rel: "canonical", href: "https://dzenotechnepal.com.np/" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        innerHTML: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Dzeno Tech Nepal Pvt. Ltd.",
+          "url": "https://dzenotechnepal.com.np",
+          "logo": "https://dzenotechnepal.com.np/logo.png",
+          "description": "Dzeno Tech Nepal Pvt. Ltd. builds software, delivers IT services, and runs practical IT training for growing businesses in Kathmandu, Nepal.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Kathmandu",
+            "addressCountry": "NP"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+977-9744621447",
+            "contactType": "customer service",
+            "email": "dzenotechnepal77@gmail.com"
+          },
+          "sameAs": [
+            "https://www.linkedin.com/company/dzeno-tech-nepal/",
+            "https://www.facebook.com/profile.php?id=61594519552480",
+            "https://www.instagram.com/dzenotechnepal",
+            "https://www.tiktok.com/@dzenotechnepal",
+            "https://github.com/dzenotechnepal",
+            "https://gitlab.com/dzenotechnepal"
+          ]
+        })
+      }
+    ]
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -113,6 +162,20 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-9JD0EJ9ELZ"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-9JD0EJ9ELZ');
+            `,
+          }}
+        />
       </head>
       <body>
         {children}

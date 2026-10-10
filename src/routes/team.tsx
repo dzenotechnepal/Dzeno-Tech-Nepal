@@ -14,13 +14,48 @@ export const Route = createFileRoute("/team")({
       {
         name: "description",
         content:
-          "Meet the engineers, consultants, and trainers behind Dzeno Tech Nepal Pvt. Ltd. — the team delivering software, IT services, and training.",
+          "Meet the engineers, consultants, and trainers behind Dzeno Tech Nepal Pvt. Ltd. in Kathmandu — the team delivering software, IT services, and training.",
       },
-      { property: "og:title", content: "Team — The People Behind Dzeno" },
+      {
+        name: "keywords",
+        content: "Dzeno Tech Nepal team, software engineers Nepal, IT consultants Nepal, IT trainers, technology team Kathmandu"
+      },
+      { property: "og:title", content: "Team — The People Behind Dzeno Tech Nepal" },
       {
         property: "og:description",
         content: "Engineers, consultants, and trainers building technology at Dzeno Tech Nepal.",
       },
+      {
+        property: "og:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+      {
+        property: "og:url",
+        content: "https://dzenotechnepal.com.np/team",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Team — The People Behind Dzeno Tech Nepal",
+      },
+      {
+        name: "twitter:description",
+        content: "Engineers, consultants, and trainers building technology at Dzeno Tech Nepal.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://dzenotechnepal.com.np/logo.png",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://dzenotechnepal.com.np/team" },
     ],
   }),
   component: Team,
