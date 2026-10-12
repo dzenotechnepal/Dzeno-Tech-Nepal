@@ -66,8 +66,10 @@ export const sendCompanyEmail = async ({ to, subject, text, html }) => {
     console.error("[email] send failed", {
       recipients,
       subject,
-      reason: error.message,
       statusCode: error.statusCode,
+      reason: error.message,
+      body: error.body ?? error.response?.body ?? null,
+      fullError: JSON.stringify(error, Object.getOwnPropertyNames(error)),
     });
     throw error;
   }

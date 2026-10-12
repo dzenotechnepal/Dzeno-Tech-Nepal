@@ -76,8 +76,14 @@ export const sendInternalEmail = async (req, res) => {
       message: "Email sent successfully",
     });
   } catch (error) {
-    return res
-      .status(502)
-      .json({ success: false, message: error.message || "Email delivery failed" });
+    const statusCode = error.statusCode === 403 ? 403 : 502;
+    const bodyMsg = error.body?.message || error.body?.errors
+      ? JSON.stringify(error.body)
+      : null;
+    const message =
+      error.statusCode === 403
+        ? "Email service not authorized. Check your MailerSend account approval status."
+        : bodyMsg || error.message || "Email delivery failed";
+    return res.status(statusCode).json({ success: false, message });
   }
 };
