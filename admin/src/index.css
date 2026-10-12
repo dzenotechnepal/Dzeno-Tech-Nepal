@@ -628,6 +628,20 @@ h3 { font-size: 1.25rem; font-weight: 500; }
   color: #b91c1c;
 }
 
+.attendance-day.is-holiday {
+  border-color: #ddd6fe;
+  background: #f5f3ff;
+}
+
+.attendance-day.is-holiday strong {
+  color: #7c3aed;
+}
+
+.attendance-day.is-holiday.is-weekend {
+  border-color: #fbcfe8;
+  background: #fdf2f8;
+}
+
 .attendance-day small {
   color: var(--text-secondary);
   font-size: 0.7rem;

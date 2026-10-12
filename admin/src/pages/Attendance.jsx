@@ -8,6 +8,7 @@ const Attendance = () => {
   const { user, hasRole } = useAuth();
   const canViewTeam = hasRole(['admin', 'superadmin', 'ceo']);
   const [attendance, setAttendance] = useState([]);
+  const [holidays, setHolidays] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState('');
   const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(0, 7));
@@ -25,6 +26,16 @@ const Attendance = () => {
       })
       .catch((err) => toast.error(err.response?.data?.message || 'Failed to load employees'));
   }, [canViewTeam, user?._id, user?.id]);
+
+  const loadHolidays = useCallback(async () => {
+    try {
+      const [year] = selectedMonth.split('-');
+      const res = await api.get('/holidays', { params: { year } });
+      setHolidays(Array.isArray(res.data.data) ? res.data.data : []);
+    } catch (err) {
+      console.error('Failed to load holidays:', err);
+    }
+  }, [selectedMonth]);
 
   const loadAttendance = useCallback(async () => {
     try {
@@ -44,6 +55,10 @@ const Attendance = () => {
       setLoading(false);
     }
   }, [canViewTeam, selectedEmployeeId, selectedMonth, user]);
+
+  useEffect(() => {
+    loadHolidays();
+  }, [loadHolidays]);
 
   useEffect(() => {
     if (!((user?._id || user?.id) && (!canViewTeam || selectedEmployeeId))) return undefined;
@@ -67,6 +82,38 @@ const Attendance = () => {
       setActionLoading(false);
     }
   };
+
+  const getHolidayDateKey = (dateVal) => {
+    if (!dateVal) return '';
+    if (typeof dateVal === 'string') return dateVal.slice(0, 10);
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return '';
+    return d.toISOString().slice(0, 10);
+  };
+
+  const activeHolidays = useMemo(
+    () => holidays.filter((h) => h.isActive !== false),
+    [holidays]
+  );
+
+  const holidaysByDate = useMemo(() => {
+    const map = {};
+    for (const h of activeHolidays) {
+      const key = getHolidayDateKey(h.date);
+      if (key) {
+        if (!map[key]) map[key] = [];
+        map[key].push(h);
+      }
+    }
+    return map;
+  }, [activeHolidays]);
+
+  const monthHolidays = useMemo(() => {
+    return activeHolidays.filter((h) => {
+      const key = getHolidayDateKey(h.date);
+      return key.startsWith(selectedMonth);
+    });
+  }, [activeHolidays, selectedMonth]);
 
   const recordsByDate = useMemo(() => Object.fromEntries(attendance.map(record => [record.date, record])), [attendance]);
   const [year, month] = selectedMonth.split('-').map(Number);
@@ -101,12 +148,45 @@ const Attendance = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <div className="card text-center p-4"><div className="text-secondary text-sm">Present Days</div><div className="text-2xl font-bold">{summary.present}</div></div>
         <div className="card text-center p-4"><div className="text-secondary text-sm">Half Days</div><div className="text-2xl font-bold">{summary.halfDay}</div></div>
         <div className="card text-center p-4"><div className="text-secondary text-sm">Absent Days</div><div className="text-2xl font-bold">{summary.absent}</div></div>
+        <div className="card text-center p-4"><div className="text-secondary text-sm">Holidays</div><div className="text-2xl font-bold text-violet-600">{monthHolidays.length}</div></div>
         <div className="card text-center p-4"><div className="text-secondary text-sm">Total Hours</div><div className="text-2xl font-bold">{summary.totalHours.toFixed(2)}h</div></div>
       </div>
+
+      {monthHolidays.length > 0 && (
+        <div className="card mb-4" style={{ padding: '0.75rem 1rem', borderLeft: '4px solid #8b5cf6', background: 'rgba(139, 92, 246, 0.05)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <strong style={{ color: '#6d28d9', fontSize: '0.85rem' }}>
+              Holidays in {new Date(year, month - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}:
+            </strong>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {monthHolidays.map((h) => {
+                const dateKey = getHolidayDateKey(h.date);
+                const dayNum = dateKey ? Number(dateKey.slice(8, 10)) : '';
+                return (
+                  <span
+                    key={h._id || h.name}
+                    title={h.description || ''}
+                    style={{
+                      background: '#ede9fe',
+                      color: '#6d28d9',
+                      padding: '2px 8px',
+                      borderRadius: '12px',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                    }}
+                  >
+                    🎉 Day {dayNum}: {h.name} <span style={{ opacity: 0.7 }}>({h.type})</span>
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="card attendance-calendar-card">
         <div className="attendance-calendar-header">{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => <span className={index === 0 || index === 6 ? 'weekend' : ''} key={day}>{day}</span>)}</div>
@@ -114,10 +194,67 @@ const Attendance = () => {
           {calendarDays.map((day, index) => {
             const date = day ? `${selectedMonth}-${String(day).padStart(2, '0')}` : null;
             const record = date ? recordsByDate[date] : null;
+            const dayHolidays = date && holidaysByDate[date] ? holidaysByDate[date] : [];
+            const isHoliday = dayHolidays.length > 0;
             const isWeekend = day && (new Date(year, month - 1, day).getDay() === 0 || new Date(year, month - 1, day).getDay() === 6);
-            return <div className={`attendance-day ${!day ? 'is-empty' : ''} ${isWeekend ? 'is-weekend' : ''}`} key={`${date || 'empty'}-${index}`}>
-              {day && <><strong>{day}</strong>{record ? <><Badge type={statusType(record.status)}>{record.status}</Badge><small>{formatTime(record.checkIn)}{record.checkOut ? ` - ${formatTime(record.checkOut)}` : ''}</small></> : <small className="text-secondary">No record</small>}</>}
-            </div>;
+            return (
+              <div
+                className={`attendance-day ${!day ? 'is-empty' : ''} ${isWeekend ? 'is-weekend' : ''} ${isHoliday ? 'is-holiday' : ''}`}
+                key={`${date || 'empty'}-${index}`}
+              >
+                {day && (
+                  <>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <strong>{day}</strong>
+                      {isHoliday && (
+                        <span
+                          title={dayHolidays.map((h) => `${h.name} (${h.type})`).join('\n')}
+                          style={{
+                            fontSize: '9px',
+                            background: '#7c3aed',
+                            color: '#fff',
+                            padding: '1px 5px',
+                            borderRadius: '6px',
+                            fontWeight: '600',
+                          }}
+                        >
+                          Holiday
+                        </span>
+                      )}
+                    </div>
+
+                    {isHoliday && (
+                      <div
+                        style={{
+                          fontSize: '10.5px',
+                          color: '#6d28d9',
+                          fontWeight: '600',
+                          lineHeight: '1.2',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                        title={dayHolidays.map((h) => `${h.name} - ${h.description || h.type}`).join('\n')}
+                      >
+                        🎉 {dayHolidays[0].name}
+                        {dayHolidays.length > 1 && ` (+${dayHolidays.length - 1})`}
+                      </div>
+                    )}
+
+                    {record ? (
+                      <>
+                        <Badge type={statusType(record.status)}>{record.status}</Badge>
+                        <small>{formatTime(record.checkIn)}{record.checkOut ? ` - ${formatTime(record.checkOut)}` : ''}</small>
+                      </>
+                    ) : isHoliday ? (
+                      <small style={{ color: '#7c3aed', fontWeight: '500' }}>Office Closed</small>
+                    ) : (
+                      <small className="text-secondary">{isWeekend ? 'Weekend' : 'No record'}</small>
+                    )}
+                  </>
+                )}
+              </div>
+            );
           })}
         </div>}
       </div>

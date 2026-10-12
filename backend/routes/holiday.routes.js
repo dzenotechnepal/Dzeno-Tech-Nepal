@@ -8,8 +8,10 @@ import {
 import { authenticate, authorize } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
-router.use(authenticate, authorize("admin", "superadmin", "ceo"));
+router.use(authenticate);
 router.get("/", getHolidays);
+
+router.use(authorize("admin", "superadmin", "ceo"));
 router.post("/", createHoliday);
 router.put("/:id", updateHoliday);
 router.delete("/:id", deleteHoliday);

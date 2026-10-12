@@ -89,6 +89,7 @@ app.use('/api/attendance', attendanceRouter);
 app.use('/api/salary', salaryRouter);
 app.use('/api/payslips', payslipRouter);
 app.use('/api/leave', leaveRouter);
+app.use('/api/leaves', leaveRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/customers', customerRouter);
 app.use('/api/products', productRouter);

@@ -14,7 +14,11 @@ export const AuthProvider = ({ children }) => {
       
       if (storedUser && token) {
         try {
-          setUser(JSON.parse(storedUser));
+          const parsed = JSON.parse(storedUser);
+          const normalized = parsed
+            ? { ...parsed, _id: parsed._id || parsed.id, id: parsed.id || parsed._id }
+            : null;
+          setUser(normalized);
         } catch (e) {
           localStorage.removeItem('dzenotech_user');
           localStorage.removeItem('dzenotech_token');
@@ -27,9 +31,12 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData, token) => {
+    const normalized = userData
+      ? { ...userData, _id: userData._id || userData.id, id: userData.id || userData._id }
+      : null;
     localStorage.setItem('dzenotech_token', token);
-    localStorage.setItem('dzenotech_user', JSON.stringify(userData));
-    setUser(userData);
+    localStorage.setItem('dzenotech_user', JSON.stringify(normalized));
+    setUser(normalized);
   };
 
   const logout = () => {
@@ -39,8 +46,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUser = (userData) => {
-    localStorage.setItem('dzenotech_user', JSON.stringify(userData));
-    setUser(userData);
+    const normalized = userData
+      ? { ...userData, _id: userData._id || userData.id, id: userData.id || userData._id }
+      : null;
+    localStorage.setItem('dzenotech_user', JSON.stringify(normalized));
+    setUser(normalized);
   };
 
   const hasRole = (roles) => {
